@@ -64,3 +64,12 @@ print(predictions[0])
 print( predictions[0].argmax())
 print(predictions[0][7])
 print(test_labels[0])
+
+# compute average accuracy over the entire test set.
+test_loss, test_acc = model.evaluate(test_images, test_labels)
+print(f"test_acc: {test_acc}")
+
+# The test-set accuracy turns out to be 97.92% and training accurancy is 98.97%.
+# This gap between training accuracy and test accuracy is an
+# example of overfitting: the fact that machine learning models tend to perform worse
+# on new data than on their training data.
