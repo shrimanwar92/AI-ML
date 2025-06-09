@@ -1,0 +1,624 @@
+feature {
+  name: "Company"
+  type: BYTES
+  domain: "Company"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "TypeName"
+  type: BYTES
+  domain: "TypeName"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Inches"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "ScreenResolution"
+  type: BYTES
+  domain: "ScreenResolution"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  distribution_constraints {
+    min_domain_mass: 0.9
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Cpu"
+  type: BYTES
+  domain: "Cpu"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  distribution_constraints {
+    min_domain_mass: 0.9
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Ram"
+  type: BYTES
+  domain: "Ram"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Memory"
+  type: BYTES
+  domain: "Memory"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  distribution_constraints {
+    min_domain_mass: 0.9
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Gpu"
+  type: BYTES
+  domain: "Gpu"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  distribution_constraints {
+    min_domain_mass: 0.9
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "OpSys"
+  type: BYTES
+  domain: "OpSys"
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Weight"
+  type: BYTES
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+feature {
+  name: "Price"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+    min_count: 1
+  }
+  not_in_environment: "SERVING"
+  not_in_environment: "SERVING"
+  not_in_environment: "SERVING"
+  shape {
+    dim {
+      size: 1
+    }
+  }
+}
+string_domain {
+  name: "Company"
+  value: "Acer"
+  value: "Apple"
+  value: "Asus"
+  value: "Chuwi"
+  value: "Dell"
+  value: "Fujitsu"
+  value: "Google"
+  value: "HP"
+  value: "Huawei"
+  value: "LG"
+  value: "Lenovo"
+  value: "MSI"
+  value: "Mediacom"
+  value: "Microsoft"
+  value: "Razer"
+  value: "Samsung"
+  value: "Toshiba"
+  value: "Vero"
+  value: "Xiaomi"
+}
+string_domain {
+  name: "TypeName"
+  value: "2 in 1 Convertible"
+  value: "Gaming"
+  value: "Netbook"
+  value: "Notebook"
+  value: "Ultrabook"
+  value: "Workstation"
+}
+string_domain {
+  name: "ScreenResolution"
+  value: "1366x768"
+  value: "1440x900"
+  value: "1600x900"
+  value: "1920x1080"
+  value: "2560x1440"
+  value: "4K Ultra HD / Touchscreen 3840x2160"
+  value: "4K Ultra HD 3840x2160"
+  value: "Full HD / Touchscreen 1920x1080"
+  value: "Full HD 1920x1080"
+  value: "IPS Panel 1366x768"
+  value: "IPS Panel 2560x1440"
+  value: "IPS Panel 4K Ultra HD / Touchscreen 3840x2160"
+  value: "IPS Panel 4K Ultra HD 3840x2160"
+  value: "IPS Panel Full HD / Touchscreen 1920x1080"
+  value: "IPS Panel Full HD 1366x768"
+  value: "IPS Panel Full HD 1920x1080"
+  value: "IPS Panel Full HD 1920x1200"
+  value: "IPS Panel Full HD 2160x1440"
+  value: "IPS Panel Full HD 2560x1440"
+  value: "IPS Panel Quad HD+ / Touchscreen 3200x1800"
+  value: "IPS Panel Quad HD+ 2560x1440"
+  value: "IPS Panel Quad HD+ 3200x1800"
+  value: "IPS Panel Retina Display 2304x1440"
+  value: "IPS Panel Retina Display 2560x1600"
+  value: "IPS Panel Retina Display 2736x1824"
+  value: "IPS Panel Retina Display 2880x1800"
+  value: "IPS Panel Touchscreen / 4K Ultra HD 3840x2160"
+  value: "IPS Panel Touchscreen 1366x768"
+  value: "IPS Panel Touchscreen 1920x1200"
+  value: "IPS Panel Touchscreen 2560x1440"
+  value: "Quad HD+ / Touchscreen 3200x1800"
+  value: "Touchscreen / Full HD 1920x1080"
+  value: "Touchscreen / Quad HD+ 3200x1800"
+  value: "Touchscreen 1366x768"
+  value: "Touchscreen 2256x1504"
+  value: "Touchscreen 2400x1600"
+  value: "Touchscreen 2560x1440"
+  value: "Quad HD+ 3200x1800"
+}
+string_domain {
+  name: "Cpu"
+  value: "AMD A10-Series 9600P 2.4GHz"
+  value: "AMD A10-Series 9620P 2.5GHz"
+  value: "AMD A10-Series A10-9620P 2.5GHz"
+  value: "AMD A12-Series 9700P 2.5GHz"
+  value: "AMD A12-Series 9720P 2.7GHz"
+  value: "AMD A12-Series 9720P 3.6GHz"
+  value: "AMD A4-Series 7210 2.2GHz"
+  value: "AMD A6-Series 7310 2GHz"
+  value: "AMD A6-Series 9220 2.5GHz"
+  value: "AMD A6-Series 9220 2.9GHz"
+  value: "AMD A6-Series A6-9220 2.5GHz"
+  value: "AMD A8-Series 7410 2.2GHz"
+  value: "AMD A9-Series 9420 2.9GHz"
+  value: "AMD A9-Series 9420 3GHz"
+  value: "AMD A9-Series A9-9420 3GHz"
+  value: "AMD E-Series 6110 1.5GHz"
+  value: "AMD E-Series 7110 1.8GHz"
+  value: "AMD E-Series 9000e 1.5GHz"
+  value: "AMD E-Series E2-6110 1.5GHz"
+  value: "AMD E-Series E2-9000 2.2GHz"
+  value: "AMD E-Series E2-9000e 1.5GHz"
+  value: "AMD FX 9830P 3GHz"
+  value: "AMD Ryzen 1600 3.2GHz"
+  value: "AMD Ryzen 1700 3GHz"
+  value: "Intel Atom Z8350 1.92GHz"
+  value: "Intel Atom x5-Z8300 1.44GHz"
+  value: "Intel Atom x5-Z8350 1.44GHz"
+  value: "Intel Atom x5-Z8550 1.44GHz"
+  value: "Intel Celeron Dual Core 3205U 1.5GHz"
+  value: "Intel Celeron Dual Core 3855U 1.6GHz"
+  value: "Intel Celeron Dual Core N3050 1.6GHz"
+  value: "Intel Celeron Dual Core N3060 1.60GHz"
+  value: "Intel Celeron Dual Core N3060 1.6GHz"
+  value: "Intel Celeron Dual Core N3350 1.1GHz"
+  value: "Intel Celeron Dual Core N3350 2.0GHz"
+  value: "Intel Celeron Quad Core N3160 1.6GHz"
+  value: "Intel Celeron Quad Core N3450 1.1GHz"
+  value: "Intel Celeron Quad Core N3710 1.6GHz"
+  value: "Intel Core M 1.2GHz"
+  value: "Intel Core M 6Y75 1.2GHz"
+  value: "Intel Core M 7Y30 1.0GHz"
+  value: "Intel Core M M3-6Y30 0.9GHz"
+  value: "Intel Core M m3 1.2GHz"
+  value: "Intel Core M m3-7Y30 2.2GHz"
+  value: "Intel Core i3 6006U 2.0GHz"
+  value: "Intel Core i3 6006U 2.2GHz"
+  value: "Intel Core i3 6006U 2GHz"
+  value: "Intel Core i3 6100U 2.1GHz"
+  value: "Intel Core i3 6100U 2.3GHz"
+  value: "Intel Core i3 7100U 2.4GHz"
+  value: "Intel Core i3 7130U 2.7GHz"
+  value: "Intel Core i5 1.3GHz"
+  value: "Intel Core i5 1.6GHz"
+  value: "Intel Core i5 1.8GHz"
+  value: "Intel Core i5 2.0GHz"
+  value: "Intel Core i5 2.3GHz"
+  value: "Intel Core i5 2.9GHz"
+  value: "Intel Core i5 3.1GHz"
+  value: "Intel Core i5 6200U 2.3GHz"
+  value: "Intel Core i5 6260U 1.8GHz"
+  value: "Intel Core i5 6300HQ 2.3GHz"
+  value: "Intel Core i5 6300U 2.4GHz"
+  value: "Intel Core i5 6440HQ 2.6GHz"
+  value: "Intel Core i5 7200U 2.5GHz"
+  value: "Intel Core i5 7300HQ 2.5GHz"
+  value: "Intel Core i5 7300U 2.6GHz"
+  value: "Intel Core i5 7440HQ 2.8GHz"
+  value: "Intel Core i5 7500U 2.7GHz"
+  value: "Intel Core i5 7Y54 1.2GHz"
+  value: "Intel Core i5 7Y57 1.2GHz"
+  value: "Intel Core i5 8250U 1.6GHz"
+  value: "Intel Core i7 2.2GHz"
+  value: "Intel Core i7 2.7GHz"
+  value: "Intel Core i7 2.8GHz"
+  value: "Intel Core i7 2.9GHz"
+  value: "Intel Core i7 6500U 2.5GHz"
+  value: "Intel Core i7 6600U 2.6GHz"
+  value: "Intel Core i7 6700HQ 2.6GHz"
+  value: "Intel Core i7 6820HK 2.7GHz"
+  value: "Intel Core i7 6820HQ 2.7GHz"
+  value: "Intel Core i7 6920HQ 2.9GHz"
+  value: "Intel Core i7 7500U 2.5GHz"
+  value: "Intel Core i7 7500U 2.7GHz"
+  value: "Intel Core i7 7560U 2.4GHz"
+  value: "Intel Core i7 7600U 2.8GHz"
+  value: "Intel Core i7 7660U 2.5GHz"
+  value: "Intel Core i7 7700HQ 2.7GHz"
+  value: "Intel Core i7 7700HQ 2.8GHz"
+  value: "Intel Core i7 7820HK 2.9GHz"
+  value: "Intel Core i7 7820HQ 2.9GHz"
+  value: "Intel Core i7 7Y75 1.3GHz"
+  value: "Intel Core i7 8550U 1.8GHz"
+  value: "Intel Core i7 8650U 1.9GHz"
+  value: "Intel Pentium Dual Core 4405U 2.1GHz"
+  value: "Intel Pentium Dual Core N4200 1.1GHz"
+  value: "Intel Pentium Quad Core N3710 1.6GHz"
+  value: "Intel Pentium Quad Core N4200 1.1GHz"
+  value: "Intel Xeon E3-1505M V6 3GHz"
+  value: "Intel Xeon E3-1535M v5 2.9GHz"
+  value: "Intel Xeon E3-1535M v6 3.1GHz"
+  value: "AMD FX 8800P 2.1GHz"
+  value: "Intel Atom X5-Z8350 1.44GHz"
+  value: "Intel Core M 1.1GHz"
+  value: "Intel Core M M7-6Y75 1.2GHz"
+  value: "Intel Core M m7-6Y75 1.2GHz"
+  value: "Intel Core i5 7200U 2.50GHz"
+  value: "Intel Core i5 7200U 2.70GHz"
+  value: "Intel Core i5 7200U 2.7GHz"
+  value: "Intel Core i7 6560U 2.2GHz"
+  value: "Intel Pentium Dual Core 4405Y 1.5GHz"
+  value: "Intel Pentium Quad Core N3700 1.6GHz"
+  value: "AMD FX 8800P 2.1GHz"
+  value: "Intel Atom X5-Z8350 1.44GHz"
+  value: "Intel Core M 1.1GHz"
+  value: "Intel Core M M7-6Y75 1.2GHz"
+  value: "Intel Core M m7-6Y75 1.2GHz"
+  value: "Intel Core i5 7200U 2.50GHz"
+  value: "Intel Core i5 7200U 2.70GHz"
+  value: "Intel Core i5 7200U 2.7GHz"
+  value: "Intel Core i7 6560U 2.2GHz"
+  value: "Intel Pentium Dual Core 4405Y 1.5GHz"
+  value: "Intel Pentium Quad Core N3700 1.6GHz"
+  value: "AMD FX 8800P 2.1GHz"
+  value: "Intel Atom X5-Z8350 1.44GHz"
+  value: "Intel Core M 1.1GHz"
+  value: "Intel Core M M7-6Y75 1.2GHz"
+  value: "Intel Core M m7-6Y75 1.2GHz"
+  value: "Intel Core i5 7200U 2.50GHz"
+  value: "Intel Core i5 7200U 2.70GHz"
+  value: "Intel Core i5 7200U 2.7GHz"
+  value: "Intel Core i7 6560U 2.2GHz"
+  value: "Intel Pentium Dual Core 4405Y 1.5GHz"
+  value: "Intel Pentium Quad Core N3700 1.6GHz"
+  value: "AMD FX 8800P 2.1GHz"
+  value: "Intel Atom X5-Z8350 1.44GHz"
+  value: "Intel Core M 1.1GHz"
+  value: "Intel Core M M7-6Y75 1.2GHz"
+  value: "Intel Core M m7-6Y75 1.2GHz"
+  value: "Intel Core i5 7200U 2.50GHz"
+  value: "Intel Core i5 7200U 2.70GHz"
+  value: "Intel Core i5 7200U 2.7GHz"
+  value: "Intel Core i7 6560U 2.2GHz"
+  value: "Intel Pentium Dual Core 4405Y 1.5GHz"
+  value: "Intel Pentium Quad Core N3700 1.6GHz"
+  value: "AMD FX 8800P 2.1GHz"
+  value: "Intel Atom X5-Z8350 1.44GHz"
+  value: "Intel Core M 1.1GHz"
+  value: "Intel Core M M7-6Y75 1.2GHz"
+  value: "Intel Core M m7-6Y75 1.2GHz"
+  value: "Intel Core i5 7200U 2.50GHz"
+  value: "Intel Core i5 7200U 2.70GHz"
+  value: "Intel Core i5 7200U 2.7GHz"
+  value: "Intel Core i7 6560U 2.2GHz"
+  value: "Intel Pentium Dual Core 4405Y 1.5GHz"
+  value: "Intel Pentium Quad Core N3700 1.6GHz"
+}
+string_domain {
+  name: "Ram"
+  value: "12GB"
+  value: "16GB"
+  value: "24GB"
+  value: "2GB"
+  value: "32GB"
+  value: "4GB"
+  value: "6GB"
+  value: "8GB"
+  value: "64GB"
+}
+string_domain {
+  name: "Memory"
+  value: "1.0TB Hybrid"
+  value: "128GB Flash Storage"
+  value: "128GB HDD"
+  value: "128GB SSD"
+  value: "128GB SSD +  1TB HDD"
+  value: "128GB SSD +  2TB HDD"
+  value: "16GB Flash Storage"
+  value: "16GB SSD"
+  value: "180GB SSD"
+  value: "1TB HDD"
+  value: "1TB HDD +  1TB HDD"
+  value: "1TB SSD"
+  value: "1TB SSD +  1TB HDD"
+  value: "240GB SSD"
+  value: "256GB Flash Storage"
+  value: "256GB SSD"
+  value: "256GB SSD +  1TB HDD"
+  value: "256GB SSD +  256GB SSD"
+  value: "256GB SSD +  2TB HDD"
+  value: "256GB SSD +  500GB HDD"
+  value: "2TB HDD"
+  value: "32GB Flash Storage"
+  value: "32GB HDD"
+  value: "32GB SSD"
+  value: "500GB HDD"
+  value: "512GB Flash Storage"
+  value: "512GB SSD"
+  value: "512GB SSD +  1TB HDD"
+  value: "512GB SSD +  256GB SSD"
+  value: "512GB SSD +  2TB HDD"
+  value: "512GB SSD +  512GB SSD"
+  value: "64GB Flash Storage"
+  value: "64GB Flash Storage +  1TB HDD"
+  value: "64GB SSD"
+  value: "1.0TB HDD"
+  value: "508GB Hybrid"
+  value: "512GB SSD + 1.0TB Hybrid"
+  value: "8GB SSD"
+  value: "1.0TB HDD"
+  value: "508GB Hybrid"
+  value: "512GB SSD + 1.0TB Hybrid"
+  value: "8GB SSD"
+  value: "1.0TB HDD"
+  value: "508GB Hybrid"
+  value: "512GB SSD + 1.0TB Hybrid"
+  value: "512GB SSD + 1.0TB Hybrid "
+  value: "8GB SSD"
+  value: "1.0TB HDD"
+  value: "508GB Hybrid"
+  value: "512GB SSD + 1.0TB Hybrid"
+  value: "8GB SSD"
+  value: "1.0TB HDD"
+  value: "508GB Hybrid"
+  value: "512GB SSD + 1.0TB Hybrid"
+  value: "8GB SSD"
+}
+string_domain {
+  name: "Gpu"
+  value: "AMD FirePro W4190M "
+  value: "AMD FirePro W5130M"
+  value: "AMD R17M-M1-70"
+  value: "AMD R4 Graphics"
+  value: "AMD Radeon 520"
+  value: "AMD Radeon 530"
+  value: "AMD Radeon 540"
+  value: "AMD Radeon Pro 455"
+  value: "AMD Radeon Pro 555"
+  value: "AMD Radeon Pro 560"
+  value: "AMD Radeon R2"
+  value: "AMD Radeon R2 Graphics"
+  value: "AMD Radeon R3"
+  value: "AMD Radeon R4"
+  value: "AMD Radeon R4 Graphics"
+  value: "AMD Radeon R5"
+  value: "AMD Radeon R5 430"
+  value: "AMD Radeon R5 520"
+  value: "AMD Radeon R5 M420"
+  value: "AMD Radeon R5 M420X"
+  value: "AMD Radeon R5 M430"
+  value: "AMD Radeon R7"
+  value: "AMD Radeon R7 Graphics"
+  value: "AMD Radeon R7 M440"
+  value: "AMD Radeon R7 M445"
+  value: "AMD Radeon R7 M460"
+  value: "AMD Radeon R7 M465"
+  value: "AMD Radeon RX 540"
+  value: "AMD Radeon RX 550"
+  value: "AMD Radeon RX 560"
+  value: "AMD Radeon RX 580"
+  value: "Intel Graphics 620"
+  value: "Intel HD Graphics"
+  value: "Intel HD Graphics 400"
+  value: "Intel HD Graphics 405"
+  value: "Intel HD Graphics 500"
+  value: "Intel HD Graphics 505"
+  value: "Intel HD Graphics 510"
+  value: "Intel HD Graphics 515"
+  value: "Intel HD Graphics 520"
+  value: "Intel HD Graphics 530"
+  value: "Intel HD Graphics 5300"
+  value: "Intel HD Graphics 540"
+  value: "Intel HD Graphics 6000"
+  value: "Intel HD Graphics 615"
+  value: "Intel HD Graphics 620"
+  value: "Intel HD Graphics 630"
+  value: "Intel Iris Graphics 540"
+  value: "Intel Iris Graphics 550"
+  value: "Intel Iris Plus Graphics 640"
+  value: "Intel Iris Plus Graphics 650"
+  value: "Intel Iris Pro Graphics"
+  value: "Intel UHD Graphics 620"
+  value: "Nvidia GTX 980 SLI"
+  value: "Nvidia GeForce 150MX"
+  value: "Nvidia GeForce 920"
+  value: "Nvidia GeForce 920M"
+  value: "Nvidia GeForce 920MX"
+  value: "Nvidia GeForce 920MX "
+  value: "Nvidia GeForce 930M"
+  value: "Nvidia GeForce 930MX"
+  value: "Nvidia GeForce 930MX "
+  value: "Nvidia GeForce 940M"
+  value: "Nvidia GeForce 940MX"
+  value: "Nvidia GeForce GT 940MX"
+  value: "Nvidia GeForce GTX 1050"
+  value: "Nvidia GeForce GTX 1050 Ti"
+  value: "Nvidia GeForce GTX 1050M"
+  value: "Nvidia GeForce GTX 1050Ti"
+  value: "Nvidia GeForce GTX 1060"
+  value: "Nvidia GeForce GTX 1070"
+  value: "Nvidia GeForce GTX 1070M"
+  value: "Nvidia GeForce GTX 1080"
+  value: "Nvidia GeForce GTX 930MX"
+  value: "Nvidia GeForce GTX 940M"
+  value: "Nvidia GeForce GTX 940MX"
+  value: "Nvidia GeForce GTX 950M"
+  value: "Nvidia GeForce GTX 960"
+  value: "Nvidia GeForce GTX 960<U+039C>"
+  value: "Nvidia GeForce GTX 960M"
+  value: "Nvidia GeForce GTX 965M"
+  value: "Nvidia GeForce GTX 970M"
+  value: "Nvidia GeForce GTX 980M"
+  value: "Nvidia GeForce GTX1050 Ti"
+  value: "Nvidia GeForce GTX1060"
+  value: "Nvidia GeForce GTX1080"
+  value: "Nvidia GeForce MX130"
+  value: "Nvidia GeForce MX150"
+  value: "Nvidia Quadro M1000M"
+  value: "Nvidia Quadro M1200"
+  value: "Nvidia Quadro M2000M"
+  value: "Nvidia Quadro M2200"
+  value: "Nvidia Quadro M2200M"
+  value: "Nvidia Quadro M520M"
+  value: "Nvidia Quadro M620"
+  value: "Nvidia Quadro M620M"
+  value: "AMD FirePro W4190M"
+  value: "AMD FirePro W6150M"
+  value: "AMD Radeon R5 M330"
+  value: "AMD Radeon R7 M365X"
+  value: "AMD Radeon R9 M385"
+  value: "Intel HD Graphics 620"
+  value: "Nvidia GeForce GTX 980"
+  value: "Nvidia Quadro 3000M"
+  value: "AMD FirePro W4190M"
+  value: "AMD FirePro W6150M"
+  value: "AMD Radeon R5 M330"
+  value: "AMD Radeon R7 M365X"
+  value: "AMD Radeon R9 M385"
+  value: "Intel HD Graphics 620 "
+  value: "Nvidia GeForce GTX 980"
+  value: "Nvidia Quadro 3000M"
+  value: "AMD FirePro W4190M"
+  value: "AMD FirePro W6150M"
+  value: "AMD Radeon R5 M330"
+  value: "AMD Radeon R7 M365X"
+  value: "AMD Radeon R9 M385"
+  value: "Intel HD Graphics 620 "
+  value: "Nvidia GeForce GTX 980"
+  value: "Nvidia Quadro 3000M"
+  value: "AMD FirePro W4190M"
+  value: "AMD FirePro W6150M"
+  value: "AMD Radeon R5 M330"
+  value: "AMD Radeon R7 M365X"
+  value: "AMD Radeon R9 M385"
+  value: "Intel HD Graphics 620 "
+  value: "Nvidia GeForce GTX 980"
+  value: "Nvidia Quadro 3000M"
+  value: "AMD FirePro W4190M"
+  value: "AMD FirePro W6150M"
+  value: "AMD Radeon R5 M330"
+  value: "AMD Radeon R7 M365X"
+  value: "AMD Radeon R9 M385"
+  value: "Intel HD Graphics 620 "
+  value: "Nvidia GeForce GTX 980"
+  value: "Nvidia Quadro 3000M"
+  value: "Nvidia GeForce GTX 980 "
+}
+string_domain {
+  name: "OpSys"
+  value: "Android"
+  value: "Chrome OS"
+  value: "Linux"
+  value: "Mac OS X"
+  value: "No OS"
+  value: "Windows 10"
+  value: "Windows 10 S"
+  value: "Windows 7"
+  value: "macOS"
+}
+default_environment: "TRAINING"
+default_environment: "SERVING"
+default_environment: "TRAINING"
+default_environment: "SERVING"
+default_environment: "TRAINING"
+default_environment: "SERVING"
