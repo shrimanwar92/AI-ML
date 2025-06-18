@@ -1,0 +1,16 @@
+# Read CSV with error handling
+df = pd.read_csv("sample.csv")
+
+# Convert Price column to numeric, coerce invalids to NaN
+df["Price"] = pd.to_numeric(df["Price"], errors="coerce")
+
+# Drop rows where price is NaN (optional)
+df_clean = df.dropna(subset=["Price"])
+
+# Now compute mean and std safely
+print("Mean price:", df_clean["Price"].mean())
+print("Std of price:", df_clean["Price"].std())
+
+
+Mean price: 1636.6564776316397
+Std of price: 799.24460642538

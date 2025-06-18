@@ -1,0 +1,179 @@
+feature {
+  name: "company_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 6
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "cpu_brand_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 1
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "cpu_family_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 4
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "gpu_brand_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 3
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "gpu_model_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 5
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "has_hdd"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "has_ssd"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "inches_bucket"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "opsys_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 2
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "scaled_height"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "scaled_memory_size"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "scaled_price"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "scaled_ram"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "scaled_weight"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "scaled_width"
+  type: FLOAT
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
+feature {
+  name: "typename_xf"
+  type: INT
+  int_domain {
+    min: -1
+    max: 4
+    is_categorical: true
+  }
+  presence {
+    min_fraction: 1.0
+  }
+  shape {
+  }
+}
