@@ -4,3 +4,6 @@
 .jupyter
 cats_vs_dogs_subset
 cats-dogs-images
+__pycache__
+env
+tfx_env
