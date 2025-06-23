@@ -7,3 +7,6 @@ cats-dogs-images
 __pycache__
 env
 tfx_env
+tmp
+dataset
+*.csv
