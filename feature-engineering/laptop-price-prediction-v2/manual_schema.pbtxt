@@ -1,0 +1,56 @@
+feature {
+  name: "Price"
+  type: FLOAT
+  float_domain {
+    min: 10000.0
+    max: 300000.0
+  }
+}
+feature {
+  name: "Company"
+  type: BYTES
+}
+feature {
+  name: "TypeName"
+  type: BYTES
+}
+feature {
+  name: "Inches"
+  type: FLOAT
+  float_domain {
+    min: 10.0
+    max: 32.0
+  }
+}
+feature {
+  name: "ScreenResolution"
+  type: BYTES
+}
+feature {
+  name: "Ram"
+  type: FLOAT
+  float_domain {
+    min: 1.0
+    max: 64.0
+  }
+}
+feature {
+  name: "Memory"
+  type: BYTES
+}
+feature {
+  name: "OpSys"
+  type: BYTES
+}
+feature {
+  name: "Weight"
+  type: FLOAT
+}
+feature {
+  name: "Cpu"
+  type: BYTES
+}
+feature {
+  name: "Gpu"
+  type: BYTES
+}
