@@ -45,6 +45,10 @@ feature {
 feature {
   name: "Weight"
   type: FLOAT
+  float_domain {
+    min: 0.5
+    max: 5.0
+  }
 }
 feature {
   name: "Cpu"
