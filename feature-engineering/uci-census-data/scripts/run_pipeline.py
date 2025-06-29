@@ -15,12 +15,18 @@ os.makedirs(CLEAN_DIR, exist_ok=True)
 def main():
     dcmp = filecmp.dircmp(RAW_DIR, CLEAN_DIR)
     has_matching_files = len(dcmp.left_only) == len(dcmp.right_only)
+
+    print(has_matching_files)
     
     if has_matching_files == False:
+        print("Preprocessing data...")
         preprocess_data(RAW_FILES)
+        print("Finished data preprocessing.")
     
     if SCHEMA_UPDATE == True:
+        print("Computing baseline TFDV stats...")
         compute_tfdv_schema()
+        print("Schema generated successfully.")
     
     #validate_data()
 
