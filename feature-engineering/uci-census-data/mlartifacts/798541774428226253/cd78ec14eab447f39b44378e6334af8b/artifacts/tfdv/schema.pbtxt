@@ -35,7 +35,7 @@ feature {
   domain: "education"
 }
 feature {
-  name: "education_num"
+  name: "education.num"
   type: INT
   int_domain {
     min: 1
@@ -47,9 +47,9 @@ feature {
   }
 }
 feature {
-  name: "marital_status"
+  name: "marital.status"
   type: BYTES
-  domain: "marital_status"
+  domain: "\'marital.status\'"
 }
 feature {
   name: "occupation"
@@ -72,7 +72,7 @@ feature {
   domain: "sex"
 }
 feature {
-  name: "capital_gain"
+  name: "capital.gain"
   type: INT
   int_domain {
     min: 0
@@ -84,7 +84,7 @@ feature {
   }
 }
 feature {
-  name: "capital_loss"
+  name: "capital.loss"
   type: INT
   int_domain {
     min: 0
@@ -96,7 +96,7 @@ feature {
   }
 }
 feature {
-  name: "hours_per_week"
+  name: "hours.per.week"
   type: INT
   int_domain {
     min: 1
@@ -109,9 +109,9 @@ feature {
   }
 }
 feature {
-  name: "native_country"
+  name: "native.country"
   type: BYTES
-  domain: "native_country"
+  domain: "\'native.country\'"
 }
 feature {
   name: "income"
@@ -150,7 +150,7 @@ string_domain {
   value: "Some-college"
 }
 string_domain {
-  name: "marital_status"
+  name: "\'marital.status\'"
   value: "Divorced"
   value: "Married-AF-spouse"
   value: "Married-civ-spouse"
@@ -201,7 +201,7 @@ string_domain {
   value: "Male"
 }
 string_domain {
-  name: "native_country"
+  name: "\'native.country\'"
   value: "?"
   value: "Cambodia"
   value: "Canada"

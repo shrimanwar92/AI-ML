@@ -918,7 +918,7 @@ datasets {
       }
     }
     path {
-      step: "education_num"
+      step: "education.num"
     }
   }
   features {
@@ -1058,7 +1058,7 @@ datasets {
       }
     }
     path {
-      step: "marital_status"
+      step: "marital.status"
     }
   }
   features {
@@ -1784,7 +1784,7 @@ datasets {
       }
     }
     path {
-      step: "capital_gain"
+      step: "capital.gain"
     }
   }
   features {
@@ -1940,7 +1940,7 @@ datasets {
       }
     }
     path {
-      step: "capital_loss"
+      step: "capital.loss"
     }
   }
   features {
@@ -2117,7 +2117,7 @@ datasets {
       }
     }
     path {
-      step: "hours_per_week"
+      step: "hours.per.week"
     }
   }
   features {
@@ -2519,7 +2519,7 @@ datasets {
       }
     }
     path {
-      step: "native_country"
+      step: "native.country"
     }
   }
   features {

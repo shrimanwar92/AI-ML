@@ -1,0 +1,560 @@
+baseline {
+  feature {
+    name: "age"
+    type: INT
+    int_domain {
+      min: 17
+      max: 90
+    }
+    drift_comparator {
+      jensen_shannon_divergence {
+        threshold: 0.1
+      }
+    }
+  }
+  feature {
+    name: "workclass"
+    type: BYTES
+    domain: "workclass"
+  }
+  feature {
+    name: "fnlwgt"
+    type: INT
+    presence {
+      min_fraction: 1.0
+      min_count: 1
+    }
+    shape {
+      dim {
+        size: 1
+      }
+    }
+  }
+  feature {
+    name: "education"
+    type: BYTES
+    domain: "education"
+  }
+  feature {
+    name: "education_num"
+    type: INT
+    int_domain {
+      min: 1
+    }
+    drift_comparator {
+      jensen_shannon_divergence {
+        threshold: 0.1
+      }
+    }
+  }
+  feature {
+    name: "marital_status"
+    type: BYTES
+    domain: "marital_status"
+  }
+  feature {
+    name: "occupation"
+    type: BYTES
+    domain: "occupation"
+  }
+  feature {
+    name: "relationship"
+    type: BYTES
+    domain: "relationship"
+  }
+  feature {
+    name: "race"
+    type: BYTES
+    domain: "race"
+  }
+  feature {
+    name: "sex"
+    type: BYTES
+    domain: "sex"
+  }
+  feature {
+    name: "capital_gain"
+    type: INT
+    int_domain {
+      min: 0
+    }
+    drift_comparator {
+      jensen_shannon_divergence {
+        threshold: 0.1
+      }
+    }
+  }
+  feature {
+    name: "capital_loss"
+    type: INT
+    int_domain {
+      min: 0
+    }
+    drift_comparator {
+      jensen_shannon_divergence {
+        threshold: 0.1
+      }
+    }
+  }
+  feature {
+    name: "hours_per_week"
+    type: INT
+    int_domain {
+      min: 1
+      max: 99
+    }
+    drift_comparator {
+      jensen_shannon_divergence {
+        threshold: 0.1
+      }
+    }
+  }
+  feature {
+    name: "native_country"
+    type: BYTES
+    domain: "native_country"
+  }
+  feature {
+    name: "income"
+    type: BYTES
+    domain: "income"
+  }
+  string_domain {
+    name: "workclass"
+    value: "?"
+    value: "Federal-gov"
+    value: "Local-gov"
+    value: "Never-worked"
+    value: "Private"
+    value: "Self-emp-inc"
+    value: "Self-emp-not-inc"
+    value: "State-gov"
+    value: "Without-pay"
+  }
+  string_domain {
+    name: "education"
+    value: "10th"
+    value: "11th"
+    value: "12th"
+    value: "1st-4th"
+    value: "5th-6th"
+    value: "7th-8th"
+    value: "9th"
+    value: "Assoc-acdm"
+    value: "Assoc-voc"
+    value: "Bachelors"
+    value: "Doctorate"
+    value: "HS-grad"
+    value: "Masters"
+    value: "Preschool"
+    value: "Prof-school"
+    value: "Some-college"
+  }
+  string_domain {
+    name: "marital_status"
+    value: "Divorced"
+    value: "Married-AF-spouse"
+    value: "Married-civ-spouse"
+    value: "Married-spouse-absent"
+    value: "Never-married"
+    value: "Separated"
+    value: "Widowed"
+  }
+  string_domain {
+    name: "occupation"
+    value: "?"
+    value: "Adm-clerical"
+    value: "Armed-Forces"
+    value: "Craft-repair"
+    value: "Exec-managerial"
+    value: "Farming-fishing"
+    value: "Handlers-cleaners"
+    value: "Machine-op-inspct"
+    value: "Other-service"
+    value: "Priv-house-serv"
+    value: "Prof-specialty"
+    value: "Protective-serv"
+    value: "Sales"
+    value: "Tech-support"
+    value: "Transport-moving"
+  }
+  string_domain {
+    name: "relationship"
+    value: "Husband"
+    value: "Not-in-family"
+    value: "Other-relative"
+    value: "Own-child"
+    value: "Unmarried"
+    value: "Wife"
+  }
+  string_domain {
+    name: "race"
+    value: "???"
+    value: "Amer-Indian-Eskimo"
+    value: "Asian-Pac-Islander"
+    value: "Black"
+    value: "Other"
+    value: "White"
+  }
+  string_domain {
+    name: "sex"
+    value: "Female"
+    value: "Male"
+  }
+  string_domain {
+    name: "native_country"
+    value: "?"
+    value: "Cambodia"
+    value: "Canada"
+    value: "China"
+    value: "Columbia"
+    value: "Cuba"
+    value: "Dominican-Republic"
+    value: "Ecuador"
+    value: "El-Salvador"
+    value: "England"
+    value: "France"
+    value: "Germany"
+    value: "Greece"
+    value: "Guatemala"
+    value: "Haiti"
+    value: "Holand-Netherlands"
+    value: "Honduras"
+    value: "Hong"
+    value: "Hungary"
+    value: "India"
+    value: "Iran"
+    value: "Ireland"
+    value: "Italy"
+    value: "Jamaica"
+    value: "Japan"
+    value: "Laos"
+    value: "Mexico"
+    value: "Nicaragua"
+    value: "Outlying-US(Guam-USVI-etc)"
+    value: "Peru"
+    value: "Philippines"
+    value: "Poland"
+    value: "Portugal"
+    value: "Puerto-Rico"
+    value: "Scotland"
+    value: "South"
+    value: "Taiwan"
+    value: "Thailand"
+    value: "Trinadad&Tobago"
+    value: "United-States"
+    value: "Vietnam"
+    value: "Yugoslavia"
+  }
+  string_domain {
+    name: "income"
+    value: "<=50K"
+    value: ">50K"
+  }
+}
+anomaly_info {
+  key: "age"
+  value {
+    description: "Expected data of type: INT but got FLOAT"
+    severity: ERROR
+    short_description: "Unexpected data type"
+    reason {
+      type: UNEXPECTED_DATA_TYPE
+      short_description: "Unexpected data type"
+      description: "Expected data of type: INT but got FLOAT"
+    }
+    path {
+      step: "age"
+    }
+  }
+}
+anomaly_info {
+  key: "capital_gain"
+  value {
+    description: "Expected data of type: INT but got FLOAT The approximate Jensen-Shannon divergence between current and previous is 1 (up to six significant digits), above the threshold 0.1."
+    severity: ERROR
+    short_description: "Multiple errors"
+    reason {
+      type: UNEXPECTED_DATA_TYPE
+      short_description: "Unexpected data type"
+      description: "Expected data of type: INT but got FLOAT"
+    }
+    reason {
+      type: COMPARATOR_JENSEN_SHANNON_DIVERGENCE_HIGH
+      short_description: "High approximate Jensen-Shannon divergence between current and previous"
+      description: "The approximate Jensen-Shannon divergence between current and previous is 1 (up to six significant digits), above the threshold 0.1."
+    }
+    path {
+      step: "capital_gain"
+    }
+  }
+}
+anomaly_info {
+  key: "capital_loss"
+  value {
+    description: "Expected data of type: INT but got FLOAT The approximate Jensen-Shannon divergence between current and previous is 0.814493 (up to six significant digits), above the threshold 0.1."
+    severity: ERROR
+    short_description: "Multiple errors"
+    reason {
+      type: UNEXPECTED_DATA_TYPE
+      short_description: "Unexpected data type"
+      description: "Expected data of type: INT but got FLOAT"
+    }
+    reason {
+      type: COMPARATOR_JENSEN_SHANNON_DIVERGENCE_HIGH
+      short_description: "High approximate Jensen-Shannon divergence between current and previous"
+      description: "The approximate Jensen-Shannon divergence between current and previous is 0.814493 (up to six significant digits), above the threshold 0.1."
+    }
+    path {
+      step: "capital_loss"
+    }
+  }
+}
+anomaly_info {
+  key: "education"
+  value {
+    description: "Examples contain values missing from the schema: 123 (~1%), ?? (~1%), unknown (~3%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: 123 (~1%), ?? (~1%), unknown (~3%). "
+    }
+    path {
+      step: "education"
+    }
+  }
+}
+anomaly_info {
+  key: "education_num"
+  value {
+    description: "Expected data of type: INT but got FLOAT The approximate Jensen-Shannon divergence between current and previous is 0.267336 (up to six significant digits), above the threshold 0.1."
+    severity: ERROR
+    short_description: "Multiple errors"
+    reason {
+      type: UNEXPECTED_DATA_TYPE
+      short_description: "Unexpected data type"
+      description: "Expected data of type: INT but got FLOAT"
+    }
+    reason {
+      type: COMPARATOR_JENSEN_SHANNON_DIVERGENCE_HIGH
+      short_description: "High approximate Jensen-Shannon divergence between current and previous"
+      description: "The approximate Jensen-Shannon divergence between current and previous is 0.267336 (up to six significant digits), above the threshold 0.1."
+    }
+    path {
+      step: "education_num"
+    }
+  }
+}
+anomaly_info {
+  key: "fnlwgt"
+  value {
+    description: "Expected data of type: INT but got FLOAT"
+    severity: ERROR
+    short_description: "Unexpected data type"
+    reason {
+      type: UNEXPECTED_DATA_TYPE
+      short_description: "Unexpected data type"
+      description: "Expected data of type: INT but got FLOAT"
+    }
+    path {
+      step: "fnlwgt"
+    }
+  }
+}
+anomaly_info {
+  key: "hours_per_week"
+  value {
+    description: "Expected data of type: INT but got FLOAT"
+    severity: ERROR
+    short_description: "Unexpected data type"
+    reason {
+      type: UNEXPECTED_DATA_TYPE
+      short_description: "Unexpected data type"
+      description: "Expected data of type: INT but got FLOAT"
+    }
+    path {
+      step: "hours_per_week"
+    }
+  }
+}
+anomaly_info {
+  key: "income"
+  value {
+    description: "Examples contain values missing from the schema: unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: unknown (~2%). "
+    }
+    path {
+      step: "income"
+    }
+  }
+}
+anomaly_info {
+  key: "marital_status"
+  value {
+    description: "Examples contain values missing from the schema: unknown (~1%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: unknown (~1%). "
+    }
+    path {
+      step: "marital_status"
+    }
+  }
+}
+anomaly_info {
+  key: "native_country"
+  value {
+    description: "Examples contain values missing from the schema: unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: unknown (~2%). "
+    }
+    path {
+      step: "native_country"
+    }
+  }
+}
+anomaly_info {
+  key: "occupation"
+  value {
+    description: "Examples contain values missing from the schema: ! (~1%), bad_data (<1%), missing (~1%), unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: ! (~1%), bad_data (<1%), missing (~1%), unknown (~2%). "
+    }
+    path {
+      step: "occupation"
+    }
+  }
+}
+anomaly_info {
+  key: "race"
+  value {
+    description: "Examples contain values missing from the schema: unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: unknown (~2%). "
+    }
+    path {
+      step: "race"
+    }
+  }
+}
+anomaly_info {
+  key: "relationship"
+  value {
+    description: "Examples contain values missing from the schema: unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: unknown (~2%). "
+    }
+    path {
+      step: "relationship"
+    }
+  }
+}
+anomaly_info {
+  key: "sex"
+  value {
+    description: "Examples contain values missing from the schema: unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: unknown (~2%). "
+    }
+    path {
+      step: "sex"
+    }
+  }
+}
+anomaly_info {
+  key: "workclass"
+  value {
+    description: "Examples contain values missing from the schema: ### (<1%), unknown (~2%). "
+    severity: ERROR
+    short_description: "Unexpected string values"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: ### (<1%), unknown (~2%). "
+    }
+    path {
+      step: "workclass"
+    }
+  }
+}
+anomaly_name_format: SERIALIZED_PATH
+drift_skew_info {
+  path {
+    step: "age"
+  }
+  drift_measurements {
+    type: JENSEN_SHANNON_DIVERGENCE
+    value: 0.06444359990318116
+    threshold: 0.1
+  }
+}
+drift_skew_info {
+  path {
+    step: "capital_gain"
+  }
+  drift_measurements {
+    type: JENSEN_SHANNON_DIVERGENCE
+    value: 0.9999999999999997
+    threshold: 0.1
+  }
+}
+drift_skew_info {
+  path {
+    step: "capital_loss"
+  }
+  drift_measurements {
+    type: JENSEN_SHANNON_DIVERGENCE
+    value: 0.8144929057223466
+    threshold: 0.1
+  }
+}
+drift_skew_info {
+  path {
+    step: "education_num"
+  }
+  drift_measurements {
+    type: JENSEN_SHANNON_DIVERGENCE
+    value: 0.26733609145845955
+    threshold: 0.1
+  }
+}
+drift_skew_info {
+  path {
+    step: "hours_per_week"
+  }
+  drift_measurements {
+    type: JENSEN_SHANNON_DIVERGENCE
+    value: 0.07444328411090406
+    threshold: 0.1
+  }
+}
