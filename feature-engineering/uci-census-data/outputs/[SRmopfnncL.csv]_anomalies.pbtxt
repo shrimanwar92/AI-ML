@@ -271,18 +271,13 @@ anomaly_info {
 anomaly_info {
   key: "capital_gain"
   value {
-    description: "Expected data of type: INT but got FLOAT The approximate Jensen-Shannon divergence between current and previous is 1 (up to six significant digits), above the threshold 0.1."
+    description: "Expected data of type: INT but got FLOAT"
     severity: ERROR
-    short_description: "Multiple errors"
+    short_description: "Unexpected data type"
     reason {
       type: UNEXPECTED_DATA_TYPE
       short_description: "Unexpected data type"
       description: "Expected data of type: INT but got FLOAT"
-    }
-    reason {
-      type: COMPARATOR_JENSEN_SHANNON_DIVERGENCE_HIGH
-      short_description: "High approximate Jensen-Shannon divergence between current and previous"
-      description: "The approximate Jensen-Shannon divergence between current and previous is 1 (up to six significant digits), above the threshold 0.1."
     }
     path {
       step: "capital_gain"
@@ -292,18 +287,13 @@ anomaly_info {
 anomaly_info {
   key: "capital_loss"
   value {
-    description: "Expected data of type: INT but got FLOAT The approximate Jensen-Shannon divergence between current and previous is 0.814493 (up to six significant digits), above the threshold 0.1."
+    description: "Expected data of type: INT but got FLOAT"
     severity: ERROR
-    short_description: "Multiple errors"
+    short_description: "Unexpected data type"
     reason {
       type: UNEXPECTED_DATA_TYPE
       short_description: "Unexpected data type"
       description: "Expected data of type: INT but got FLOAT"
-    }
-    reason {
-      type: COMPARATOR_JENSEN_SHANNON_DIVERGENCE_HIGH
-      short_description: "High approximate Jensen-Shannon divergence between current and previous"
-      description: "The approximate Jensen-Shannon divergence between current and previous is 0.814493 (up to six significant digits), above the threshold 0.1."
     }
     path {
       step: "capital_loss"
@@ -329,18 +319,13 @@ anomaly_info {
 anomaly_info {
   key: "education_num"
   value {
-    description: "Expected data of type: INT but got FLOAT The approximate Jensen-Shannon divergence between current and previous is 0.267336 (up to six significant digits), above the threshold 0.1."
+    description: "Expected data of type: INT but got FLOAT"
     severity: ERROR
-    short_description: "Multiple errors"
+    short_description: "Unexpected data type"
     reason {
       type: UNEXPECTED_DATA_TYPE
       short_description: "Unexpected data type"
       description: "Expected data of type: INT but got FLOAT"
-    }
-    reason {
-      type: COMPARATOR_JENSEN_SHANNON_DIVERGENCE_HIGH
-      short_description: "High approximate Jensen-Shannon divergence between current and previous"
-      description: "The approximate Jensen-Shannon divergence between current and previous is 0.267336 (up to six significant digits), above the threshold 0.1."
     }
     path {
       step: "education_num"
@@ -508,53 +493,3 @@ anomaly_info {
   }
 }
 anomaly_name_format: SERIALIZED_PATH
-drift_skew_info {
-  path {
-    step: "age"
-  }
-  drift_measurements {
-    type: JENSEN_SHANNON_DIVERGENCE
-    value: 0.06444359990318116
-    threshold: 0.1
-  }
-}
-drift_skew_info {
-  path {
-    step: "capital_gain"
-  }
-  drift_measurements {
-    type: JENSEN_SHANNON_DIVERGENCE
-    value: 0.9999999999999997
-    threshold: 0.1
-  }
-}
-drift_skew_info {
-  path {
-    step: "capital_loss"
-  }
-  drift_measurements {
-    type: JENSEN_SHANNON_DIVERGENCE
-    value: 0.8144929057223466
-    threshold: 0.1
-  }
-}
-drift_skew_info {
-  path {
-    step: "education_num"
-  }
-  drift_measurements {
-    type: JENSEN_SHANNON_DIVERGENCE
-    value: 0.26733609145845955
-    threshold: 0.1
-  }
-}
-drift_skew_info {
-  path {
-    step: "hours_per_week"
-  }
-  drift_measurements {
-    type: JENSEN_SHANNON_DIVERGENCE
-    value: 0.07444328411090406
-    threshold: 0.1
-  }
-}

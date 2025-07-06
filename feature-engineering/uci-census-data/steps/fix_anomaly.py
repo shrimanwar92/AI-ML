@@ -4,6 +4,9 @@ from utils import OUTPUT_DIR, CLEAN_DIR
 import glob
 import pandas as pd
 from steps.tfdv_validate import save_anomalies_to_md, save_anomalies_pbtxt
+from typing import List
+import contextlib
+import os
 
 # Function to get feature by name
 def get_feature_by_name(schema, name):
@@ -21,7 +24,7 @@ def clean_df_with_schema(file_name, schema, anomalies):
         
         for reason in anomaly_info.reason:
             short_desc = reason.short_description.lower()
-            print(f">>>>>>>>{feature_name}>>>>>>>>>>", short_desc)
+            print(f">>>>>>>>{feature_name}<<<<<<<<<<", short_desc)
             if "out-of-range" in short_desc and (feature_schema and feature_schema.int_domain):
                 min_expected = feature_schema.int_domain.min
                 max_expected = feature_schema.int_domain.max
@@ -33,29 +36,38 @@ def clean_df_with_schema(file_name, schema, anomalies):
 
 
 @step
-def fix_anomalies() -> None:
+def fix_anomalies(csv_files: List[str]) -> None:
     """Check OUTPUT_DIR for anomalies.pbtxt files, fix them, and return updated schema/stats paths."""
-    anomaly_files = glob.glob(f"{OUTPUT_DIR}/*anomalies.pbtxt")
-    schema_path = f"{OUTPUT_DIR}/schema.pbtxt"
-    stats_path = f"{OUTPUT_DIR}/baseline_stats.txt"
-
-    print(anomaly_files)
     
-    if not anomaly_files:
+    schema_path = f"{OUTPUT_DIR}/schema.pbtxt"
+    
+    if len(csv_files) <= 0:
         print("No anomaly files found in OUTPUT_DIR")
         return None
     
-    for file in anomaly_files:
-        anomalies = tfdv.load_anomalies_text(file)
+    for file in csv_files:
+        file_name = file.split("/")[-1]
+        print(file_name)
+        anomaly_file = f"{OUTPUT_DIR}/[{file_name}]_anomalies.pbtxt"
+        anomaly_file_md = f"{OUTPUT_DIR}/[{file_name}]_anomalies_summary.md"
+        print(anomaly_file)
+        print(anomaly_file_md)
+        anomalies = tfdv.load_anomalies_text(anomaly_file)
         schema = tfdv.load_schema_text(schema_path)
-        csv_name = file.split("[")[1].split("]")[0]
-        clean_df = clean_df_with_schema(csv_name, schema, anomalies)
+
+        if len(anomalies.anomaly_info) > 0:
+            print("Anomalies found...")
+            clean_df = clean_df_with_schema(file_name, schema, anomalies)
+            stats = tfdv.generate_statistics_from_dataframe(clean_df)
+            anomalies = tfdv.validate_statistics(stats, schema)
         
-        stats = tfdv.generate_statistics_from_dataframe(clean_df)
-        anomalies = tfdv.validate_statistics(stats, schema)
-        
-        clean_df.to_csv(f"{CLEAN_DIR}/{csv_name}", index=False)
-        save_anomalies_pbtxt(anomalies, csv_name)
-        save_anomalies_to_md(anomalies, csv_name)
-    
-    print("Anomalies fixed.")
+            print("Trying to fix anomalies...")
+            clean_df.to_csv(f"{CLEAN_DIR}/{file_name}", index=False)
+            save_anomalies_pbtxt(anomalies, file_name)
+            save_anomalies_to_md(anomalies, file_name)
+            print(f"Anomalies fixed. Please check the file [{file}] for more info.")
+        else:
+            with contextlib.suppress(FileNotFoundError):
+                os.remove(anomaly_file)
+                os.remove(anomaly_file_md)
+            print("Empty anomaly files deleted.")

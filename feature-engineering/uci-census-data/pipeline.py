@@ -37,6 +37,6 @@ def tfdv_pipeline(mode: str):
         validate_csv(cleaned_csvs, schema_path, stats_path)
 
 @pipeline
-def fix_anomaly():
-    fix_anomalies()
+def fix_anomaly(csv_files: List[str]):
+    fix_anomalies(csv_files)
 
