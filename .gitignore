@@ -11,3 +11,4 @@ tmp
 dataset
 *.csv
 .vscode
+.docx#
