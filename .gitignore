@@ -9,6 +9,5 @@ env
 tfx_env
 tmp
 dataset
-*.csv
 .vscode
 .docx#

@@ -3,6 +3,7 @@ from steps.preprocess import preprocess_data
 from steps.compute_tfdv_schema import compute_tfdv_schema
 from steps.tfdv_validate import validate_csv
 from steps.fix_anomaly import fix_anomalies
+from steps.transform import transform_data
 from utils import RAW_DIR, CLEAN_DIR, OUTPUT_DIR
 import filecmp
 from typing import Tuple, List
@@ -39,4 +40,9 @@ def tfdv_pipeline(mode: str):
 @pipeline
 def fix_anomaly(csv_files: List[str]):
     fix_anomalies(csv_files)
+
+@pipeline
+def transform(csv_file: str, analyze: bool):
+    transform_data(csv_file, analyze)
+
 

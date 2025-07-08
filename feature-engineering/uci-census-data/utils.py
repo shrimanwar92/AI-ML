@@ -3,8 +3,9 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
-RAW_DIR = PROJECT_ROOT / "dataset/raw"
-CLEAN_DIR = PROJECT_ROOT / 'dataset/clean'
+DATASET_DIR = PROJECT_ROOT / 'data'
+RAW_DIR = DATASET_DIR / 'raw'
+CLEAN_DIR = DATASET_DIR / 'clean'
 OUTPUT_DIR = PROJECT_ROOT / "outputs"
 os.makedirs(CLEAN_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
