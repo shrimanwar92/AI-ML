@@ -2,7 +2,7 @@ import tensorflow_data_validation as tfdv
 from tensorflow_metadata.proto.v0 import schema_pb2
 from typing import Tuple, List
 from zenml import step
-from utils import combine_csv, CLEAN_DIR, OUTPUT_DIR, get_feature_by_name
+from utils import combine_csv, OUTPUT_DIR, get_feature_by_name
 
 @step(enable_cache=False)
 def compute_tfdv_schema(cleaned_csvs: List[str])  -> Tuple[str, str]:
@@ -29,6 +29,11 @@ def compute_tfdv_schema(cleaned_csvs: List[str])  -> Tuple[str, str]:
     age_feature.int_domain.max = 90
     age_feature.drift_comparator.jensen_shannon_divergence.threshold = 0.1  # 10% proportion change allowed
 
+    fnlwgt_feature = get_feature_by_name(schema, 'fnlwgt')
+    fnlwgt_feature.ClearField('presence')
+    fnlwgt_feature.ClearField('shape')
+    fnlwgt_feature.type = schema_pb2.FeatureType.INT
+    
     education_num_feature = get_feature_by_name(schema, 'education_num')
     education_num_feature.ClearField('presence')
     education_num_feature.ClearField('shape')
@@ -62,8 +67,8 @@ def compute_tfdv_schema(cleaned_csvs: List[str])  -> Tuple[str, str]:
     hrs_per_week_feature.int_domain.max = 99
     hrs_per_week_feature.drift_comparator.jensen_shannon_divergence.threshold = 0.1  # 10% proportion change allowed
 
-    # race = get_feature_by_name(schema, 'race')
-    # race.distribution_constraints.min_domain_mass = 0.95  # Accept small drift
+    race = get_feature_by_name(schema, 'race')
+    race.distribution_constraints.min_domain_mass = 0.95  # Accept small drift
     
     tfdv.write_stats_text(stats, stats_path)
     tfdv.write_schema_text(schema, schema_path)

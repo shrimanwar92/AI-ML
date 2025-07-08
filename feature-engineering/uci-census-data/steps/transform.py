@@ -9,26 +9,34 @@ import pyarrow.parquet as pq
 from zenml import step
 from tensorflow_transform.tf_metadata import dataset_metadata
 from tensorflow_transform.tf_metadata import schema_utils
-from utils import CLEAN_DIR, OUTPUT_DIR, DATASET_DIR
+from utils import OUTPUT_DIR, DATASET_DIR
 from typing import List, Dict
 from pathlib import Path
+import shutil
 
 
 # --- Step 1: Define preprocessing function ---
 def preprocessing_fn(inputs):
     outputs = {}
     numeric = ['age', 'fnlwgt', 'education_num', 'capital_gain', 'capital_loss', 'hours_per_week']
+    
     for f in numeric:
+        mean = tft.mean(inputs[f])
+        var = tft.var(inputs[f])
+        tf.compat.v1.logging.info(f'Mean and Var for {f}: %s, %s', mean, var)
         outputs[f"{f}_normalized"] = tft.scale_to_z_score(inputs[f])
+    
     categorical = ['workclass', 'education', 'marital_status', 'occupation', 
                    'relationship', 'race', 'sex', 'native_country']
     for f in categorical:
         outputs[f"{f}_encoded"] = tft.compute_and_apply_vocabulary(inputs[f])
-    outputs['income'] = inputs['income']
+    
+    outputs['label'] = tf.cast(tft.compute_and_apply_vocabulary(inputs['income']), tf.int64)
+    
     return outputs
 
 
-# --- Step 2: Define metadata (raw schema) ---
+# # --- Step 2: Define metadata (raw schema) ---
 RAW_FEATURE_SPEC = {
     'age': tf.io.FixedLenFeature([], tf.float32),
     'fnlwgt': tf.io.FixedLenFeature([], tf.float32),
@@ -56,6 +64,8 @@ SAVE_DIR = "tmp/transform_output"
 TRANSFORM_FN_DIR = OUTPUT_DIR / "transform_fn"
 PARQUET_OUTPUT = DATASET_DIR / "transformed"
 os.makedirs(SAVE_DIR, exist_ok=True)
+if os.path.exists(TRANSFORM_FN_DIR):
+    shutil.rmtree(TRANSFORM_FN_DIR)
 os.makedirs(TRANSFORM_FN_DIR, exist_ok=True)
 os.makedirs(PARQUET_OUTPUT, exist_ok=True)
 
@@ -96,6 +106,8 @@ def run_pipeline(raw_data: List[Dict], analyze: bool, output_file_name: str):
             # Write output as a single parquet file using Arrow
             def to_arrow_table(data_iter):
                 df = pd.DataFrame(data_iter)
+                print("Sample transformed rows:\n", df.head())
+                
                 table = pa.Table.from_pandas(df)
                 pq.write_table(table, os.path.join(PARQUET_OUTPUT, f"{output_file_name}.parquet"))
                 return []
@@ -107,7 +119,7 @@ def run_pipeline(raw_data: List[Dict], analyze: bool, output_file_name: str):
             )
 
 
-@step
+@step(enable_cache=False)
 def transform_data(file_path: str, analyze: bool) -> None:
     stem = Path(file_path).stem
     raw_data = _load_data(file_path)

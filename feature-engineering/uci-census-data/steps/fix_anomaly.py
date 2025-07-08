@@ -35,7 +35,7 @@ def clean_df_with_schema(file_name, schema, anomalies):
     return df
 
 
-@step
+@step(enable_cache=False)
 def fix_anomalies(csv_files: List[str]) -> None:
     """Check OUTPUT_DIR for anomalies.pbtxt files, fix them, and return updated schema/stats paths."""
     

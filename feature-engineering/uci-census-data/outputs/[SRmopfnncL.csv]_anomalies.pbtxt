@@ -20,15 +20,6 @@ baseline {
   feature {
     name: "fnlwgt"
     type: INT
-    presence {
-      min_fraction: 1.0
-      min_count: 1
-    }
-    shape {
-      dim {
-        size: 1
-      }
-    }
   }
   feature {
     name: "education"
@@ -66,6 +57,9 @@ baseline {
     name: "race"
     type: BYTES
     domain: "race"
+    distribution_constraints {
+      min_domain_mass: 0.95
+    }
   }
   feature {
     name: "sex"
@@ -121,6 +115,7 @@ baseline {
   }
   string_domain {
     name: "workclass"
+    value: "###"
     value: "?"
     value: "Federal-gov"
     value: "Local-gov"
@@ -130,16 +125,19 @@ baseline {
     value: "Self-emp-not-inc"
     value: "State-gov"
     value: "Without-pay"
+    value: "unknown"
   }
   string_domain {
     name: "education"
     value: "10th"
     value: "11th"
+    value: "123"
     value: "12th"
     value: "1st-4th"
     value: "5th-6th"
     value: "7th-8th"
     value: "9th"
+    value: "??"
     value: "Assoc-acdm"
     value: "Assoc-voc"
     value: "Bachelors"
@@ -149,6 +147,7 @@ baseline {
     value: "Preschool"
     value: "Prof-school"
     value: "Some-college"
+    value: "unknown"
   }
   string_domain {
     name: "marital_status"
@@ -159,9 +158,11 @@ baseline {
     value: "Never-married"
     value: "Separated"
     value: "Widowed"
+    value: "unknown"
   }
   string_domain {
     name: "occupation"
+    value: "!"
     value: "?"
     value: "Adm-clerical"
     value: "Armed-Forces"
@@ -177,6 +178,9 @@ baseline {
     value: "Sales"
     value: "Tech-support"
     value: "Transport-moving"
+    value: "bad_data"
+    value: "missing"
+    value: "unknown"
   }
   string_domain {
     name: "relationship"
@@ -186,6 +190,7 @@ baseline {
     value: "Own-child"
     value: "Unmarried"
     value: "Wife"
+    value: "unknown"
   }
   string_domain {
     name: "race"
@@ -195,11 +200,13 @@ baseline {
     value: "Black"
     value: "Other"
     value: "White"
+    value: "unknown"
   }
   string_domain {
     name: "sex"
     value: "Female"
     value: "Male"
+    value: "unknown"
   }
   string_domain {
     name: "native_country"
@@ -245,11 +252,13 @@ baseline {
     value: "United-States"
     value: "Vietnam"
     value: "Yugoslavia"
+    value: "unknown"
   }
   string_domain {
     name: "income"
     value: "<=50K"
     value: ">50K"
+    value: "unknown"
   }
 }
 anomaly_info {
@@ -301,22 +310,6 @@ anomaly_info {
   }
 }
 anomaly_info {
-  key: "education"
-  value {
-    description: "Examples contain values missing from the schema: 123 (~1%), ?? (~1%), unknown (~3%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: 123 (~1%), ?? (~1%), unknown (~3%). "
-    }
-    path {
-      step: "education"
-    }
-  }
-}
-anomaly_info {
   key: "education_num"
   value {
     description: "Expected data of type: INT but got FLOAT"
@@ -361,134 +354,6 @@ anomaly_info {
     }
     path {
       step: "hours_per_week"
-    }
-  }
-}
-anomaly_info {
-  key: "income"
-  value {
-    description: "Examples contain values missing from the schema: unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: unknown (~2%). "
-    }
-    path {
-      step: "income"
-    }
-  }
-}
-anomaly_info {
-  key: "marital_status"
-  value {
-    description: "Examples contain values missing from the schema: unknown (~1%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: unknown (~1%). "
-    }
-    path {
-      step: "marital_status"
-    }
-  }
-}
-anomaly_info {
-  key: "native_country"
-  value {
-    description: "Examples contain values missing from the schema: unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: unknown (~2%). "
-    }
-    path {
-      step: "native_country"
-    }
-  }
-}
-anomaly_info {
-  key: "occupation"
-  value {
-    description: "Examples contain values missing from the schema: ! (~1%), bad_data (<1%), missing (~1%), unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: ! (~1%), bad_data (<1%), missing (~1%), unknown (~2%). "
-    }
-    path {
-      step: "occupation"
-    }
-  }
-}
-anomaly_info {
-  key: "race"
-  value {
-    description: "Examples contain values missing from the schema: unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: unknown (~2%). "
-    }
-    path {
-      step: "race"
-    }
-  }
-}
-anomaly_info {
-  key: "relationship"
-  value {
-    description: "Examples contain values missing from the schema: unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: unknown (~2%). "
-    }
-    path {
-      step: "relationship"
-    }
-  }
-}
-anomaly_info {
-  key: "sex"
-  value {
-    description: "Examples contain values missing from the schema: unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: unknown (~2%). "
-    }
-    path {
-      step: "sex"
-    }
-  }
-}
-anomaly_info {
-  key: "workclass"
-  value {
-    description: "Examples contain values missing from the schema: ### (<1%), unknown (~2%). "
-    severity: ERROR
-    short_description: "Unexpected string values"
-    reason {
-      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
-      short_description: "Unexpected string values"
-      description: "Examples contain values missing from the schema: ### (<1%), unknown (~2%). "
-    }
-    path {
-      step: "workclass"
     }
   }
 }

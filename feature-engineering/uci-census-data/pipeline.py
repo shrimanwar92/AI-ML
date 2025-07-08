@@ -4,38 +4,29 @@ from steps.compute_tfdv_schema import compute_tfdv_schema
 from steps.tfdv_validate import validate_csv
 from steps.fix_anomaly import fix_anomalies
 from steps.transform import transform_data
-from utils import RAW_DIR, CLEAN_DIR, OUTPUT_DIR
-import filecmp
-from typing import Tuple, List
-
-dcmp = filecmp.dircmp(RAW_DIR, CLEAN_DIR)
-
-@step(enable_cache=False)
-def skip_compute_schema(cleaned_csv: List[str]) -> Tuple[str, str]:
-    # Load from predefined paths or from logged artifacts
-    return f"{OUTPUT_DIR}/schema.pbtxt", f"{OUTPUT_DIR}/baseline_stats.txt"
-
-@step(enable_cache=False)
-def is_new_csv_present():
-    has_matching_files = len(dcmp.left_only) == len(dcmp.right_only)
-    print(list(dcmp.left_only))
-    print("Do files match between raw and clean?", has_matching_files)
-    if has_matching_files:
-        raise ValueError("No new files to process. Stopping pipeline.")
-    
+from utils import RAW_DIR, CLEAN_DIR, get_new_csv, get_tfdv_schema
+from typing import List
+import glob    
 
 @pipeline
-def tfdv_pipeline(mode: str):
-    if mode == "baseline":
-        is_new_csv_present()
-        cleaned_csvs = preprocess_data(list(dcmp.left_only))
-        schema_path, stats_path = compute_tfdv_schema(cleaned_csvs)
-        validate_csv(cleaned_csvs, schema_path, stats_path)
-    elif mode == "new":
-        is_new_csv_present()
-        cleaned_csvs = preprocess_data(list(dcmp.left_only))
-        schema_path, stats_path = skip_compute_schema(cleaned_csvs)
-        validate_csv(cleaned_csvs, schema_path, stats_path)
+def baseline_clean():
+    raw_csvs = glob.glob(f"{RAW_DIR}/*.csv")
+    cleaned_csvs = preprocess_data(raw_csvs)
+    print("Baseline cleaning done.")
+    print(cleaned_csvs)
+
+@pipeline
+def compute_schema():
+    cleaned_csvs = glob.glob(f"{CLEAN_DIR}/*.csv")
+    schema_path, stats_path = compute_tfdv_schema(cleaned_csvs)
+    validate_csv(cleaned_csvs, schema_path, stats_path)
+
+@pipeline
+def validate_new_csv():
+    new_csvs = get_new_csv()
+    cleaned_csvs = preprocess_data(new_csvs)
+    schema_path, stats_path = get_tfdv_schema()
+    validate_csv(cleaned_csvs, schema_path, stats_path)
 
 @pipeline
 def fix_anomaly(csv_files: List[str]):

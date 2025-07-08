@@ -1,12 +1,13 @@
-from pipeline import tfdv_pipeline, fix_anomaly, transform
+from pipeline import baseline_clean, compute_schema, validate_new_csv, fix_anomaly, transform
 from utils import CLEAN_DIR
 
 
 if __name__ == "__main__":
-    #tfdv_pipeline("new")
-    # files = [
-    #     f"{CLEAN_DIR}/SRmopfnncL.csv"
-    # ]
-    # fix_anomaly(files)
-    transform(csv_file=f"{CLEAN_DIR}/adult_drifted_invalid.csv", analyze=False)
+    #compute_schema()
+    # fix_anomaly([
+    #     f"{CLEAN_DIR}/SRmopfnncL.csv", 
+    #     f"{CLEAN_DIR}/adult.csv", 
+    #     f"{CLEAN_DIR}/adult_drifted_invalid.csv"
+    # ])
+    transform(csv_file=f"{CLEAN_DIR}/adult_drifted_invalid.csv", analyze=True)
 

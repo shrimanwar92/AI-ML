@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+import filecmp
+from typing import Tuple
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 
@@ -27,3 +29,17 @@ def combine_csv(all_files):
         list_of_dfs.append(single_df)
 
     return pd.concat(list_of_dfs, ignore_index=True)
+
+def get_tfdv_schema() -> Tuple[str, str]:
+    # Load from predefined paths or from logged artifacts
+    return f"{OUTPUT_DIR}/schema.pbtxt", f"{OUTPUT_DIR}/baseline_stats.txt"
+
+def get_new_csv():
+    dcmp = filecmp.dircmp(RAW_DIR, CLEAN_DIR)
+    has_matching_files = len(dcmp.left_only) == len(dcmp.right_only)
+    print(list(dcmp.left_only))
+    print("Do files match between raw and clean?", has_matching_files)
+    if has_matching_files:
+        raise ValueError("No new files to process. Stopping pipeline.")
+    
+    return list(dcmp.left_only)

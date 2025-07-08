@@ -67,8 +67,13 @@ feature {
   }
 }
 feature {
-  name: "income"
-  type: BYTES
+  name: "label"
+  type: INT
+  int_domain {
+    min: -1
+    max: 1
+    is_categorical: true
+  }
   presence {
     min_fraction: 1.0
   }
@@ -122,7 +127,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 4
+    max: 5
     is_categorical: true
   }
   presence {
