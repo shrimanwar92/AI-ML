@@ -30,7 +30,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 15
+    max: 18
     is_categorical: true
   }
   presence {
@@ -71,7 +71,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 1
+    max: 2
     is_categorical: true
   }
   presence {
@@ -85,7 +85,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 6
+    max: 7
     is_categorical: true
   }
   presence {
@@ -99,7 +99,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 41
+    max: 42
     is_categorical: true
   }
   presence {
@@ -113,7 +113,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 14
+    max: 18
     is_categorical: true
   }
   presence {
@@ -127,7 +127,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 5
+    max: 6
     is_categorical: true
   }
   presence {
@@ -141,7 +141,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 5
+    max: 6
     is_categorical: true
   }
   presence {
@@ -155,7 +155,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 1
+    max: 2
     is_categorical: true
   }
   presence {
@@ -169,7 +169,7 @@ feature {
   type: INT
   int_domain {
     min: -1
-    max: 8
+    max: 10
     is_categorical: true
   }
   presence {

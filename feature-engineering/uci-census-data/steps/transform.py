@@ -9,7 +9,7 @@ import pyarrow.parquet as pq
 from zenml import step
 from tensorflow_transform.tf_metadata import dataset_metadata
 from tensorflow_transform.tf_metadata import schema_utils
-from utils import OUTPUT_DIR, DATASET_DIR
+from utils import OUTPUT_DIR, DATASET_DIR, combine_csv
 from typing import List, Dict
 from pathlib import Path
 import shutil
@@ -69,10 +69,11 @@ if os.path.exists(TRANSFORM_FN_DIR):
 os.makedirs(TRANSFORM_FN_DIR, exist_ok=True)
 os.makedirs(PARQUET_OUTPUT, exist_ok=True)
 
-def _load_data(file_path: str):
+def _load_data(file_paths: List[str]):
     # --- Step 3: Load raw data (example CSV) ---
     # '/mnt/c/Users/shrim/Documents/src/AI-ML/feature-engineering/uci-census-data/data.csv'
-    df = pd.read_csv(file_path)
+    #df = pd.read_csv(file_path)
+    df = combine_csv(file_paths)
     raw_data = df.to_dict(orient="records")
     return raw_data
 
@@ -120,11 +121,15 @@ def run_pipeline(raw_data: List[Dict], analyze: bool, output_file_name: str):
 
 
 @step(enable_cache=False)
-def transform_data(file_path: str, analyze: bool) -> None:
-    stem = Path(file_path).stem
-    raw_data = _load_data(file_path)
+def transform_data(file_paths: List[str], analyze: bool) -> None:
+    output_file_name = "transformed_"
+    for file_name in file_paths:
+        output_file_name += f"{Path(file_name).stem}_"
+    
+    raw_data = _load_data(file_paths)
+    
     run_pipeline(
         raw_data=raw_data,
         analyze=analyze,
-        output_file_name=stem
+        output_file_name=output_file_name
     )

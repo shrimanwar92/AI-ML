@@ -33,7 +33,7 @@ def fix_anomaly(csv_files: List[str]):
     fix_anomalies(csv_files)
 
 @pipeline
-def transform(csv_file: str, analyze: bool):
-    transform_data(csv_file, analyze)
+def transform(csv_files: List[str], analyze: bool):
+    transform_data(csv_files, analyze)
 
 

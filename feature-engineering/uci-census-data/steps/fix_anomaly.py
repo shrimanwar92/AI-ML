@@ -24,13 +24,23 @@ def clean_df_with_schema(file_name, schema, anomalies):
         
         for reason in anomaly_info.reason:
             short_desc = reason.short_description.lower()
+            description = reason.description.lower()
             print(f">>>>>>>>{feature_name}<<<<<<<<<<", short_desc)
+            
             if "out-of-range" in short_desc and (feature_schema and feature_schema.int_domain):
-                min_expected = feature_schema.int_domain.min
-                max_expected = feature_schema.int_domain.max
-                print(f"🧹 Clipping [{feature_name}] to [{min_expected}, {max_expected}]")
-                df.loc[df[feature_name] < min_expected, feature_name] = min_expected
-                df.loc[df[feature_name] > max_expected, feature_name] = max_expected
+                if feature_schema.int_domain.min:
+                    min_expected = feature_schema.int_domain.min 
+                    print(f"🧹 Clipping [{feature_name}] to min [{min_expected}]")
+                    df.loc[df[feature_name] < min_expected, feature_name] = min_expected
+                
+                if feature_schema.int_domain.max:
+                    max_expected = feature_schema.int_domain.max
+                    print(f"🧹 Clipping [{feature_name}] to max [{max_expected}]")
+                    df.loc[df[feature_name] > max_expected, feature_name] = max_expected
+
+            if "int but got float" in description and (feature_schema and feature_schema.int_domain):
+                print(f"🧹 Converting [{feature_name}] float to int")
+                df[feature_name] = df[feature_name].astype(int)
 
     return df
 
