@@ -1,0 +1,7 @@
+/mnt/c/Users/shrim/Documents/src/AI-ML/feature-engineering/uci-census-data-sagemaker-pipelines/venv_sm/lib/python3.11/site-packages
+/home/nilays/tfx/lib/python3.11/site-packages
+
+
+docker run -it --rm tfdv-tft:latest python3 -c "import pandas as pd; print(pd.__version__)"
+
+docker images -f "dangling=true" -q | xargs -r docker rmi -f
