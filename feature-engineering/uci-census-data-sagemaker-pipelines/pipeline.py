@@ -79,6 +79,45 @@ def _fix_anomalies(script_processor):
         ],
     )
 
+def _transform(script_processor, analyze: bool):
+    if analyze:
+        arguments = [
+            "--files", "adult.csv", "adult_drifted_invalid.csv",
+            "--analyze", "true",
+            "--data-dir", "/opt/ml/processing/data",
+            "--transformed-output-dir", "/opt/ml/processing/output/transformed",
+            "--transform-fn-output-dir", "/opt/ml/processing/output/transform_fn"
+        ]
+        inputs = [
+            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination="/opt/ml/processing/data")
+        ]
+        outputs = [
+            ProcessingOutput(source="/opt/ml/processing/output/transformed", destination=f"s3://{S3_BUCKET}/dataset/transformed"),
+            ProcessingOutput(source="/opt/ml/processing/output/transform_fn", destination=f"s3://{S3_BUCKET}/output/transform_fn")
+        ]
+    else:
+        arguments = [
+            "--files", "SRmopfnncL.csv",
+            "--analyze", "false",
+            "--data-dir", "/opt/ml/processing/data",
+            "--transform-fn-dir", "/opt/ml/processing/transform_fn",
+            "--transformed-output-dir", "/opt/ml/processing/output/transformed"
+        ]
+        inputs = [
+            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination="/opt/ml/processing/data"),
+            ProcessingInput(source=f"s3://{S3_BUCKET}/output/transform_fn", destination="/opt/ml/processing/transform_fn")
+        ]
+        outputs = [
+            ProcessingOutput(source="/opt/ml/processing/output/transformed", destination=f"s3://{S3_BUCKET}/dataset/transformed"),
+        ]
+
+    script_processor.run(
+        code="steps/transform.py",
+        inputs=inputs,
+        outputs=outputs,
+        arguments=arguments,
+    )
+
 
 def run_pipeline():
     local_session = setup_sagemaker_local_session()
@@ -97,7 +136,8 @@ def run_pipeline():
     #_preprocess(script_processor)
     #_compute_schema(script_processor)
     #_validate_csv(script_processor)
-    _fix_anomalies(script_processor)
+    #_fix_anomalies(script_processor)
+    _transform(script_processor, analyze=False)
 
 if __name__ == "__main__":
     run_pipeline()

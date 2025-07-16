@@ -1,6 +1,3 @@
-import site
-site.addsitedir("/home/nilays/tfx/lib/python3.11/site-packages")
-
 import os
 import tensorflow as tf
 import tensorflow_transform as tft
@@ -11,10 +8,25 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 from tensorflow_transform.tf_metadata import dataset_metadata
 from tensorflow_transform.tf_metadata import schema_utils
-from utils import OUTPUT_DIR, DATASET_DIR, combine_csv
 from typing import List, Dict
 from pathlib import Path
-import shutil
+import argparse
+from pathlib import Path
+
+TRANSFORM_FN_OUTPUT_DIR = None
+PARQUET_OUTPUT = None
+TRANSFORM_FN_READ_DIR = None
+
+def _combine_csv(all_files):
+    import pandas as pd
+    
+    list_of_dfs = []
+    
+    for filename in all_files:
+        single_df = pd.read_csv(filename)
+        list_of_dfs.append(single_df)
+
+    return pd.concat(list_of_dfs, ignore_index=True)
 
 
 # --- Step 1: Define preprocessing function ---
@@ -61,21 +73,8 @@ RAW_METADATA = dataset_metadata.DatasetMetadata(
     schema_utils.schema_from_feature_spec(RAW_FEATURE_SPEC)
 )
 
-# --- Step 4: Run Beam pipeline ---
-SAVE_DIR = "tmp/transform_output"
-TRANSFORM_FN_DIR = OUTPUT_DIR / "transform_fn"
-PARQUET_OUTPUT = DATASET_DIR / "transformed"
-os.makedirs(SAVE_DIR, exist_ok=True)
-if os.path.exists(TRANSFORM_FN_DIR):
-    shutil.rmtree(TRANSFORM_FN_DIR)
-os.makedirs(TRANSFORM_FN_DIR, exist_ok=True)
-os.makedirs(PARQUET_OUTPUT, exist_ok=True)
-
 def _load_data(file_paths: List[str]):
-    # --- Step 3: Load raw data (example CSV) ---
-    # '/mnt/c/Users/shrim/Documents/src/AI-ML/feature-engineering/uci-census-data/data.csv'
-    #df = pd.read_csv(file_path)
-    df = combine_csv(file_paths)
+    df = _combine_csv(file_paths)
     raw_data = df.to_dict(orient="records")
     return raw_data
 
@@ -92,13 +91,13 @@ def run_pipeline(raw_data: List[Dict], analyze: bool, output_file_name: str):
                 )
 
                 # Save transform_fn for reuse
-                _ = transform_fn | "WriteTransformFn" >> tft_beam.WriteTransformFn(TRANSFORM_FN_DIR)
+                _ = transform_fn | "WriteTransformFn" >> tft_beam.WriteTransformFn(TRANSFORM_FN_OUTPUT_DIR)
 
             else:
                 # Load existing transform_fn and only transform
                 transform_fn = (
                     pipeline
-                    | "ReadTransformFn" >> tft_beam.ReadTransformFn(TRANSFORM_FN_DIR)
+                    | "ReadTransformFn" >> tft_beam.ReadTransformFn(TRANSFORM_FN_READ_DIR)
                 )
 
                 transformed_data_pc, transformed_metadata = (
@@ -122,7 +121,7 @@ def run_pipeline(raw_data: List[Dict], analyze: bool, output_file_name: str):
             )
 
 
-def transform_data(file_paths: List[str], analyze: bool) -> None:
+def _transform_dataset(file_paths: List[str], analyze: bool) -> None:
     output_file_name = "transformed_"
     for file_name in file_paths:
         output_file_name += f"{Path(file_name).stem}_"
@@ -134,3 +133,23 @@ def transform_data(file_paths: List[str], analyze: bool) -> None:
         analyze=analyze,
         output_file_name=output_file_name
     )
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--files", nargs='+', help="List of files to process")
+    parser.add_argument("--analyze", type=str)
+    parser.add_argument("--data-dir", type=str)
+    parser.add_argument("--transformed-output-dir", type=str)
+    parser.add_argument("--transform-fn-output-dir", type=str, default="/opt/ml/processing/output/transform_fn")
+    parser.add_argument("--transform-fn-dir", type=str, default="/opt/ml/processing/transform_fn")
+    args = parser.parse_args()
+
+    PARQUET_OUTPUT = Path(args.transformed_output_dir)
+    file_paths = [f"{args.data_dir}/{file}" for file in args.files]
+
+    if args.analyze.lower() == "true":
+        TRANSFORM_FN_OUTPUT_DIR = Path(args.transform_fn_output_dir)
+        _transform_dataset(file_paths, True)
+    else:
+        TRANSFORM_FN_READ_DIR = Path(args.transform_fn_dir)
+        _transform_dataset(file_paths, False)
