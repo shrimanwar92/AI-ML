@@ -1,8 +1,9 @@
 # steps/preprocess.py
-import os
 import pandas as pd
 import argparse
 from pathlib import Path
+import uuid
+import time
 
 def preprocess(raw_input_dir: str, clean_output_dir: str):
     raw_input_path = Path(raw_input_dir)
@@ -21,6 +22,10 @@ def preprocess(raw_input_dir: str, clean_output_dir: str):
             'hours.per.week': 'hours_per_week',
             'native.country': 'native_country'
         }, inplace=True)
+
+        df = df.drop(columns=['fnlwgt'])  # remove irrelevant
+        df['record_id'] = [str(uuid.uuid4()) for _ in range(len(df))]
+        df['event_time'] = pd.to_datetime('now')  # current timestamp
 
         string_cols = df.select_dtypes(include='object').columns
         df[string_cols] = df[string_cols].fillna('unknown')

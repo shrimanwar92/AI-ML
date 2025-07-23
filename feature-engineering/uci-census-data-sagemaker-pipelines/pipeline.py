@@ -1,14 +1,16 @@
 import os
 import boto3
 from sagemaker.processing import ScriptProcessor, ProcessingInput, ProcessingOutput
-from helpers import setup_sagemaker_local_session, DEFAULT_REGION, ROLE, S3_BUCKET
+from helpers import DEFAULT_REGION, S3_BUCKET, get_pandas_processor, get_tensorflow_processor
 
 # Dummy AWS credentials
 os.environ["AWS_DEFAULT_REGION"] = DEFAULT_REGION
 
 def _preprocess(script_processor):
     # ✅ Run preprocess script
-    script_processor.run(
+    pandas_processor = get_pandas_processor()
+
+    pandas_processor.run(
         code="steps/preprocess.py",
         inputs=[
             ProcessingInput(source=os.path.abspath("dataset/raw"), destination="/opt/ml/processing/input"),
@@ -20,7 +22,9 @@ def _preprocess(script_processor):
         logs=True
     )
 
-def _compute_schema(script_processor):
+def _compute_schema():
+    script_processor = get_tensorflow_processor("compute_schema")
+    
     # Step 2: Compute Schema
     script_processor.run(
         code="steps/compute_tfdv_schema.py",
@@ -33,7 +37,9 @@ def _compute_schema(script_processor):
         arguments=["--input-dir", "/opt/ml/processing/input", "--output-dir", "/opt/ml/processing/output"],
     )
 
-def _validate_csv(script_processor):
+def _validate_csv():
+    script_processor = get_tensorflow_processor("validate_csv")
+    
     script_processor.run(
         code="steps/tfdv_validate.py",
         inputs=[
@@ -50,7 +56,9 @@ def _validate_csv(script_processor):
         ],
     )
 
-def _fix_anomalies(script_processor):
+def _fix_anomalies():
+    script_processor = get_tensorflow_processor("fix_anomalies")
+    
     schema_dir = "/opt/ml/processing/schema"
     data_dir = "/opt/ml/processing/data"
     anomalies_dir = "/opt/ml/processing/anomalies"
@@ -79,7 +87,9 @@ def _fix_anomalies(script_processor):
         ],
     )
 
-def _transform(script_processor, analyze: bool):
+def _transform(analyze: bool):
+    script_processor = get_tensorflow_processor("transform")
+    
     if analyze:
         arguments = [
             "--files", "adult.csv", "adult_drifted_invalid.csv",
@@ -120,24 +130,11 @@ def _transform(script_processor, analyze: bool):
 
 
 def run_pipeline():
-    local_session = setup_sagemaker_local_session()
-
-    # ✅ ScriptProcessor with your custom Docker image
-    script_processor = ScriptProcessor(
-        image_uri="sagemaker-local:latest",
-        command=["python3"],
-        instance_type="local",
-        instance_count=1,
-        base_job_name="preprocess",
-        role=ROLE,
-        sagemaker_session=local_session,
-    )
-
-    #_preprocess(script_processor)
-    #_compute_schema(script_processor)
-    #_validate_csv(script_processor)
-    #_fix_anomalies(script_processor)
-    _transform(script_processor, analyze=False)
+    _preprocess()
+    #_compute_schema()
+    #_validate_csv()
+    #_fix_anomalies()
+    #_transform(analyze=False)
 
 if __name__ == "__main__":
     run_pipeline()

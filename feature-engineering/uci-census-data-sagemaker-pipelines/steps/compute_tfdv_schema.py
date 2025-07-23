@@ -50,11 +50,6 @@ def compute_tfdv_schema(raw_input_dir, clean_output_dir)  -> Tuple[str, str]:
     age_feature.int_domain.min = 17
     age_feature.int_domain.max = 90
     age_feature.drift_comparator.jensen_shannon_divergence.threshold = 0.1  # 10% proportion change allowed
-
-    fnlwgt_feature = get_feature_by_name(schema, 'fnlwgt')
-    fnlwgt_feature.ClearField('presence')
-    fnlwgt_feature.ClearField('shape')
-    fnlwgt_feature.type = schema_pb2.FeatureType.INT
     
     education_num_feature = get_feature_by_name(schema, 'education_num')
     education_num_feature.ClearField('presence')

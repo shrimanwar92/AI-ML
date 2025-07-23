@@ -53,7 +53,6 @@ def preprocessing_fn(inputs):
 # # --- Step 2: Define metadata (raw schema) ---
 RAW_FEATURE_SPEC = {
     'age': tf.io.FixedLenFeature([], tf.float32),
-    'fnlwgt': tf.io.FixedLenFeature([], tf.float32),
     'education_num': tf.io.FixedLenFeature([], tf.float32),
     'capital_gain': tf.io.FixedLenFeature([], tf.float32),
     'capital_loss': tf.io.FixedLenFeature([], tf.float32),
