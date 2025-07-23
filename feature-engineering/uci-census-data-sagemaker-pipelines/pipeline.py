@@ -24,35 +24,40 @@ def _preprocess(script_processor):
 
 def _compute_schema():
     script_processor = get_tensorflow_processor("compute_schema")
+    container_input_dir = "/opt/ml/processing/input"
+    container_output_dir = "/opt/ml/processing/output"
     
     # Step 2: Compute Schema
     script_processor.run(
         code="steps/compute_tfdv_schema.py",
         inputs=[
-            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination="/opt/ml/processing/input")
+            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination=container_input_dir)
         ],
         outputs=[
-            ProcessingOutput(source="/opt/ml/processing/output", destination=f"s3://{S3_BUCKET}/output")
+            ProcessingOutput(source=container_output_dir, destination=f"s3://{S3_BUCKET}/schema")
         ],
-        arguments=["--input-dir", "/opt/ml/processing/input", "--output-dir", "/opt/ml/processing/output"],
+        arguments=["--input-dir", container_input_dir , "--output-dir", container_output_dir],
     )
 
 def _validate_csv():
     script_processor = get_tensorflow_processor("validate_csv")
+    container_data_dir = "/opt/ml/processing/data"
+    container_output_dir = "/opt/ml/processing/output"
+    container_schema_dir = "/opt/ml/processing/schema"
     
     script_processor.run(
         code="steps/tfdv_validate.py",
         inputs=[
-            ProcessingInput(source=f"s3://{S3_BUCKET}/output", destination="/opt/ml/processing/schema"),
-            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination="/opt/ml/processing/data")
+            ProcessingInput(source=f"s3://{S3_BUCKET}/schema", destination=container_schema_dir),
+            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination=container_data_dir)
         ],
         outputs=[
-            ProcessingOutput(source="/opt/ml/processing/output", destination=f"s3://{S3_BUCKET}/anomalies")
+            ProcessingOutput(source=container_output_dir, destination=f"s3://{S3_BUCKET}/anomalies")
         ],
         arguments=[
-            "--schema-dir", "/opt/ml/processing/schema", 
-            "--data-dir", "/opt/ml/processing/data",
-            "--output-dir", "/opt/ml/processing/output"
+            "--schema-dir", container_schema_dir, 
+            "--data-dir", container_data_dir,
+            "--output-dir", container_output_dir
         ],
     )
 
@@ -69,7 +74,7 @@ def _fix_anomalies():
     script_processor.run(
         code="steps/fix_anomaly.py",
         inputs=[
-            ProcessingInput(source=f"s3://{S3_BUCKET}/output", destination=schema_dir),
+            ProcessingInput(source=f"s3://{S3_BUCKET}/schema", destination=schema_dir),
             ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/cleaned", destination=data_dir),
             ProcessingInput(source=f"s3://{S3_BUCKET}/anomalies", destination=anomalies_dir),
             ProcessingInput(source="steps", destination="/opt/ml/code"),
@@ -130,11 +135,11 @@ def _transform(analyze: bool):
 
 
 def run_pipeline():
-    _preprocess()
+    # _preprocess()
     #_compute_schema()
-    #_validate_csv()
+    # _validate_csv()
     #_fix_anomalies()
-    #_transform(analyze=False)
+    _transform(analyze=False)
 
 if __name__ == "__main__":
     run_pipeline()

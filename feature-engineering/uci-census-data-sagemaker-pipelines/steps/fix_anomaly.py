@@ -45,6 +45,16 @@ def clean_df_with_schema(data_path, file_name, schema, anomalies):
                 print(f"🧹 Converting [{feature_name}] float to int")
                 df[feature_name] = df[feature_name].astype(int)
 
+            if "unexpectedly small value" in description and (feature_schema and feature_schema.int_domain):
+                min_expected = feature_schema.int_domain.min 
+                print(f"🧹 Fixing unexpectedly small value: [{feature_name}] to min [{min_expected}]")
+                df.loc[df[feature_name] < min_expected, feature_name] = min_expected
+
+            if "unexpectedly large value" in description and (feature_schema and feature_schema.int_domain):
+                max_expected = feature_schema.int_domain.max
+                print(f"🧹 Fixing unexpectedly large value: [{feature_name}] to max [{max_expected}]")
+                df.loc[df[feature_name] > max_expected, feature_name] = max_expected
+
     return df
 
 def is_anomaly_present(anomalies):
