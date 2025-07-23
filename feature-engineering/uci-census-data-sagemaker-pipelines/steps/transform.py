@@ -32,7 +32,7 @@ def _combine_csv(all_files):
 # --- Step 1: Define preprocessing function ---
 def preprocessing_fn(inputs):
     outputs = {}
-    numeric = ['age', 'fnlwgt', 'education_num', 'capital_gain', 'capital_loss', 'hours_per_week']
+    numeric = ['age', 'education_num', 'capital_gain', 'capital_loss', 'hours_per_week']
     
     for f in numeric:
         mean = tft.mean(inputs[f])
@@ -44,14 +44,25 @@ def preprocessing_fn(inputs):
                    'relationship', 'race', 'sex', 'native_country']
     for f in categorical:
         outputs[f"{f}_encoded"] = tft.compute_and_apply_vocabulary(inputs[f])
+
+    income = inputs['income']
+    cleaned_income = tf.where(
+        tf.logical_or(tf.equal(income, "<=50K"), tf.equal(income, ">50K")),
+        income,
+        tf.constant("<=50K")  # Replace invalid with default or estimated most common
+    )
     
-    outputs['label'] = tf.cast(tft.compute_and_apply_vocabulary(inputs['income']), tf.int64)
+    outputs['label'] = tf.cast(tft.compute_and_apply_vocabulary(cleaned_income), tf.int64)
+
+    outputs['record_id'] = inputs['record_id']
+    outputs['event_time'] = inputs['event_time']
     
     return outputs
 
 
 # # --- Step 2: Define metadata (raw schema) ---
 RAW_FEATURE_SPEC = {
+    'record_id': tf.io.FixedLenFeature([], tf.string),
     'age': tf.io.FixedLenFeature([], tf.float32),
     'education_num': tf.io.FixedLenFeature([], tf.float32),
     'capital_gain': tf.io.FixedLenFeature([], tf.float32),
@@ -66,6 +77,7 @@ RAW_FEATURE_SPEC = {
     'sex': tf.io.FixedLenFeature([], tf.string),
     'native_country': tf.io.FixedLenFeature([], tf.string),
     'income': tf.io.FixedLenFeature([], tf.string),
+    'event_time': tf.io.FixedLenFeature([], tf.string),
 }
 
 RAW_METADATA = dataset_metadata.DatasetMetadata(
@@ -107,11 +119,22 @@ def run_pipeline(raw_data: List[Dict], analyze: bool, output_file_name: str):
             # Write output as a single parquet file using Arrow
             def to_arrow_table(data_iter):
                 df = pd.DataFrame(data_iter)
+
                 print("Sample transformed rows:\n", df.head())
-                
-                table = pa.Table.from_pandas(df)
-                pq.write_table(table, os.path.join(PARQUET_OUTPUT, f"{output_file_name}.parquet"))
+
+                # Separate label, id, and event time
+                label_df = df[["label", "record_id", "event_time"]]
+                feature_columns = [col for col in df.columns if col not in ["label", "record_id", "event_time"]]
+                feature_df = df[["record_id", "event_time"] + feature_columns]
+
+                # Write label data for model training
+                pq.write_table(pa.Table.from_pandas(label_df), os.path.join(PARQUET_OUTPUT, f"{output_file_name}_labels.parquet"))
+
+                # Write features for Feature Store ingestion
+                pq.write_table(pa.Table.from_pandas(feature_df), os.path.join(PARQUET_OUTPUT, f"{output_file_name}_features.parquet"))
+
                 return []
+
 
             _ = (
                 transformed_data_pc
