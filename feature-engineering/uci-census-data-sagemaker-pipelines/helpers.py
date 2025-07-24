@@ -26,7 +26,7 @@ def get_pandas_processor(base_job_name = "preprocess"):
 def get_tensorflow_processor(job_name = "preprocess"):
     # ✅ ScriptProcessor with your custom Docker image
     return ScriptProcessor(
-        image_uri="sagemaker-local:latest",
+        image_uri="tfdv-tft:latest",
         command=["python3"],
         instance_type="local",
         instance_count=1,
