@@ -1,7 +1,8 @@
 import os
-import boto3
-from sagemaker.processing import ScriptProcessor, ProcessingInput, ProcessingOutput
-from helpers import DEFAULT_REGION, S3_BUCKET, get_pandas_processor, get_tensorflow_processor
+from sagemaker.processing import ProcessingInput, ProcessingOutput
+from helpers import (DEFAULT_REGION, S3_BUCKET, 
+                    get_pandas_processor, get_tensorflow_processor,
+                    local_session)
 
 # Dummy AWS credentials
 os.environ["AWS_DEFAULT_REGION"] = DEFAULT_REGION
@@ -133,13 +134,31 @@ def _transform(analyze: bool):
         arguments=arguments,
     )
 
+def _store_features_in_feature_store():
+    script_processor = get_pandas_processor("store_features")
+    container_data_dir = "/opt/ml/processing/data"
+    
+    script_processor.run(
+        code="steps/store_features_in_feature_store.py",
+        inputs=[
+            ProcessingInput(source=f"s3://{S3_BUCKET}/dataset/transformed", destination=container_data_dir)
+        ],
+        arguments=[
+            "--data-dir", container_data_dir,
+            "--role-arn", "arn:aws:iam::229058914239:role/DummyRole",
+            "--files", "transformed_adult_adult_drifted_invalid__features.parquet",
+        ],
+    )
+
 
 def run_pipeline():
     # _preprocess()
     #_compute_schema()
     # _validate_csv()
     #_fix_anomalies()
-    _transform(analyze=False)
+    #_transform(analyze=False)
+    _store_features_in_feature_store()
+
 
 if __name__ == "__main__":
     run_pipeline()

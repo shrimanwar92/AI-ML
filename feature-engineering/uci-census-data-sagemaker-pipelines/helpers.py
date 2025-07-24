@@ -12,13 +12,13 @@ local_session = LocalSession(boto_session=boto_session)
 local_session.config = {"local": {"local_code": True}}
     
 
-def get_pandas_processor():
+def get_pandas_processor(base_job_name = "preprocess"):
     return ScriptProcessor(
         image_uri="pandas-image:latest",
         command=["python3"],
         instance_type="local",
         instance_count=1,
-        base_job_name="preprocess",
+        base_job_name=base_job_name,
         role=ROLE,
         sagemaker_session=local_session,
     )
