@@ -3,6 +3,7 @@ FROM python:3.11-slim as base
 WORKDIR /app
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV MODIN_ENGINE=ray
 
 # Install required system packages for pip and compilation
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -13,12 +14,8 @@ ENV PIP_NO_CACHE_DIR=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV PYTHONUNBUFFERED=1
 
-RUN pip install --no-cache-dir pandas \
-    && pip install --no-cache-dir pyarrow \
-    && pip install --no-cache-dir sagemaker modin[ray] xgboost s3fs
+RUN pip install pandas pyarrow s3fs xgboost modin[ray]
 
 COPY . /app
-
-ENV MODIN_ENGINE=ray
 
 CMD ["python3"]
