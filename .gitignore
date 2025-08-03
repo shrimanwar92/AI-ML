@@ -10,5 +10,6 @@ tfx_env
 tmp
 dataset
 .vscode
-.docx#
+*.docx
+*.docx#*
 .venv
