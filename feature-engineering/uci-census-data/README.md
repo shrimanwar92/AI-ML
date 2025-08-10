@@ -75,7 +75,7 @@ flowchart TD
         F2 --> F3[Transformed Features]
     end
 
-## 🔄 Project structure
+## Project structure
 .
 ├── steps/
 │   ├── preprocess.py           # Data cleaning and preprocessing
