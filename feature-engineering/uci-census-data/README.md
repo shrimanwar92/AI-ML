@@ -24,7 +24,6 @@ The pipelines handle:
 ### 2️⃣ Compute Schema (`compute_schema`)
 - Reads cleaned CSVs from `CLEAN_DIR`.
 - Generates **TFDV schema** and **statistics**.
-- Validates data against the generated schema.
 
 ---
 
@@ -33,11 +32,12 @@ The pipelines handle:
 - Cleans them using preprocessing step.
 - Loads **existing schema** and **stats**.
 - Validates new data for anomalies.
+- Generates anomalies files for each csv
 
 ---
 
 ### 4️⃣ Fix Anomaly (`fix_anomaly`)
-- Reads CSV files with anomalies.
+- Reads CSV files with their respective anomalies.
 - Applies fixes (e.g., correcting categories, handling missing values).
 - Saves cleaned versions.
 
