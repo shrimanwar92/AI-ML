@@ -1,4 +1,4 @@
-# SageMaker Feature Engineering, Validation & Training Pipeline
+# SageMaker Feature Engineering, Validation & Training Pipeline for CC recommendation
 
 This repository implements an end-to-end machine learning pipeline using Amazon SageMaker Processing Jobs.  
 It includes feature validation, anomaly fixing, data format conversion, model training, and batch evaluation.  
@@ -78,5 +78,33 @@ flowchart TD
     style R fill:#bfb,stroke:#333,stroke-width:1px
     style J fill:#bfb,stroke:#333,stroke-width:1px
     style K fill:#bfb,stroke:#333,stroke-width:1px
+```
+## Folder structure
+```
+.
+├── dataset/                       # Local datasets (raw/cleaned)
+│   └── raw/                       # Raw input data
+├── scripts/                       # Processing scripts
+│   ├── tfdv_analyze.py             # TFDV schema generation/validation
+│   ├── fix_anomaly.py              # Fix detected anomalies
+│   ├── save_to_parquet.py          # Convert CSV to Parquet
+│   ├── train.py                    # Model training
+│   ├── evaluate_batch.py           # Batch evaluation
+├── helpers.py                      # Helper functions for SageMaker processors
+├── pipeline.py                     # Main pipeline definition
+└── README.md                       # Project documentation
+```
+## Output in S3
 
 ```
+| Step               | Output Path                             |
+| ------------------ | --------------------------------------- |
+| TFDV Schema        | `s3://<S3_BUCKET>/tfdv-outputs`         |
+| Anomalies          | `s3://<S3_BUCKET>/anomalies`            |
+| Cleaned Dataset    | `s3://<S3_BUCKET>/dataset/cleaned`      |
+| Parquet Dataset    | `s3://<S3_BUCKET>/dataset/eval/parquet` |
+| Model Artifacts    | `s3://<S3_BUCKET>/artifacts`            |
+| Evaluation Reports | `s3://<S3_BUCKET>/model-evaluation`     |
+```
+
+
