@@ -60,7 +60,7 @@ flowchart TD
     G --> H[Training Artifacts in S3]
     
     %% Evaluation path
-    A --> R[Convert to Parquet for Evaluation]
+    A -->|Model evaluation for batch| R[Convert to Parquet for Evaluation]
     H --> J[Batch Evaluation]
     R --> J
     J --> K[Evaluation Report in S3]
