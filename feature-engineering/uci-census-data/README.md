@@ -89,8 +89,10 @@ flowchart TD
 ├── README.md                   # Documentation
 ```
 ## 🔄 Commands
+```
 `zenml pipeline run baseline_clean`
 `zenml pipeline run compute_schema`
 `zenml pipeline run validate_new_csv`
 `zenml pipeline run fix_anomaly --csv_files data/anomalies/*.csv`
 `zenml pipeline run transform --csv_files data/clean/*.csv --analyze true`
+```
