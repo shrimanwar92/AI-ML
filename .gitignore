@@ -13,3 +13,5 @@ dataset
 *.docx
 *.docx#*
 .venv
+artifacts
+*.joblib

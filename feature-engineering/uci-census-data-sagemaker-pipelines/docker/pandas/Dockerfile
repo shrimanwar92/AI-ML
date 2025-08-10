@@ -14,8 +14,9 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 ENV PYTHONUNBUFFERED=1
 
 RUN pip install --no-cache-dir pandas \
-    && pip install --no-cache-dir pyarrow \
-    && pip install --no-cache-dir sagemaker
+    && pip install --no-cache-dir joblib \
+    && pip install --no-cache-dir scikit-learn \
+    && pip install --no-cache-dir pyarrow
 
 COPY . /app
 
