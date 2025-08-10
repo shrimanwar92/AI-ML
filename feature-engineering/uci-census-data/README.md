@@ -74,7 +74,7 @@ flowchart TD
         F1[Cleaned CSVs] --> F2[Transform Step]
         F2 --> F3[Transformed Features]
     end
-
+```
 ## Project structure
 .
 ├── steps/
