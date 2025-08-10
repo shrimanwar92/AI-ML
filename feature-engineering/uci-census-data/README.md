@@ -74,3 +74,22 @@ flowchart TD
         F1[Cleaned CSVs] --> F2[Transform Step]
         F2 --> F3[Transformed Features]
     end
+
+## 🔄 Project structure
+.
+├── steps/
+│   ├── preprocess.py           # Data cleaning and preprocessing
+│   ├── compute_tfdv_schema.py  # Schema + stats computation
+│   ├── tfdv_validate.py        # TFDV validation
+│   ├── fix_anomaly.py          # Fixes detected anomalies
+│   ├── transform.py            # Feature transformation logic
+├── utils.py                    # Helper functions and constants
+├── pipelines.py                # ZenML pipeline definitions
+├── README.md                   # Documentation
+
+## 🔄 Commands
+`zenml pipeline run baseline_clean`
+`zenml pipeline run compute_schema`
+`zenml pipeline run validate_new_csv`
+`zenml pipeline run fix_anomaly --csv_files data/anomalies/*.csv`
+`zenml pipeline run transform --csv_files data/clean/*.csv --analyze true`
