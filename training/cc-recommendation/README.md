@@ -48,17 +48,35 @@ The pipeline leverages:
 
 ```mermaid
 flowchart TD
+    %% Training path
     A[Raw Dataset in S3] --> B[TFDV Analyze]
     B -->|Schema| S[Schema in S3]
     B -->|Anomalies| C[Anomalies in S3]
     C --> D[Fix Anomalies]
     S --> D
     D --> E[Cleaned Dataset in S3]
-    E --> F[Convert to Parquet]
+    E --> F[Convert to Parquet for Training]
     F --> G[Train Model]
     G --> H[Training Artifacts in S3]
-    F --> I[Evaluation Dataset in Parquet]
+    
+    %% Evaluation path
+    A --> R[Convert to Parquet for Evaluation]
     H --> J[Batch Evaluation]
-    I --> J
+    R --> J
     J --> K[Evaluation Report in S3]
+
+    %% Styling
+    style A fill:#f9f,stroke:#333,stroke-width:1px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
+    style E fill:#bbf,stroke:#333,stroke-width:1px
+    style F fill:#bbf,stroke:#333,stroke-width:1px
+    style G fill:#bbf,stroke:#333,stroke-width:1px
+    style H fill:#bbf,stroke:#333,stroke-width:1px
+
+    style R fill:#bfb,stroke:#333,stroke-width:1px
+    style J fill:#bfb,stroke:#333,stroke-width:1px
+    style K fill:#bfb,stroke:#333,stroke-width:1px
+
 ```
