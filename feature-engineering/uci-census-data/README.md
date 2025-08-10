@@ -76,6 +76,7 @@ flowchart TD
     end
 ```
 ## Project structure
+```
 .
 ├── steps/
 │   ├── preprocess.py           # Data cleaning and preprocessing
@@ -86,7 +87,7 @@ flowchart TD
 ├── utils.py                    # Helper functions and constants
 ├── pipelines.py                # ZenML pipeline definitions
 ├── README.md                   # Documentation
-
+```
 ## 🔄 Commands
 `zenml pipeline run baseline_clean`
 `zenml pipeline run compute_schema`
