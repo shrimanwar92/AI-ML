@@ -1,6 +1,7 @@
 ## Trigger glue job from sagemaker pipelines step
 
-flowchart TD```
+```mermaid
+flowchart TD
     A[SageMaker Pipeline] --> B[CallbackStep]
     B --> C[Lambda: Trigger Glue Job]
     C --> D[Start Glue JobRun]
@@ -16,4 +17,4 @@ flowchart TD```
 
     I --> K[Resume SageMaker Pipeline]
     J --> K[Resume SageMaker Pipeline]
-    ```
+```
