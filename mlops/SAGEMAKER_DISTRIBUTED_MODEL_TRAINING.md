@@ -69,6 +69,8 @@ training_path
 
 #### Outside of tuning the hardware behind the training job we can revisit the data source format we were talking about. You can evaluate FsX Lustre which can scale to 100s of GB/s throughput. Another option is sharding the dataset in a different format like parquet to try various combinations of number of files and file size.
 
+#### Sagemaker in-built alsorithms: https://docs.aws.amazon.com/sagemaker/latest/dg/algos.html
+
 ---
 
 ### 🔹 1. Data Parallelism with tf.distribute.MirroredStrategy
