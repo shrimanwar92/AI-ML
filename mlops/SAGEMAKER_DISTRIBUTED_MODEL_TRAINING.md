@@ -5,6 +5,72 @@
 
 ---
 
+### Why does data source matter with SageMaker?
+- Where and how our data is provided is essential to optimizing training time.
+- `File Mode:` Here SageMaker downloads your dataset into the instance memory before training kicks off. Downloads full data in memory.
+- `Fast File Mode: ` With Fast File Mode the dataset is streamed into the instance in real-time so we can avoid the overhead of downloading the entire dataset.
+- `Fsx Lustre: ` Outside of S3 there’s also options to work with Elastic File System (EFS) and FsX Lustre on SageMaker. FsX Lustre you can scale at a greater rate compared to other options, but there is operational overhead of setting up the VPC for this option.
+
+---
+
+### Instance type selection
+- For Computer Vision and NLP use GPU based instances and for algorithm like XGBoost use memory optimized instances such as `ml.m5.24xlarge`.
+---
+
+### Training Input (`TrainingInput` class in sagemaker)
+```python
+train_input = TrainingInput('s3://sagemaker-us-east-1-474422712127/xgboost-1TB/', content_type="text/csv", 
+input_mode='FastFile', distribution = "ShardedByS3Key")
+training_path
+```
+- we specify that we are utilizing `FastFile` mode, otherwise it defaults to File mode.
+- We also specify the distribution as `ShardedByS3Key`, this indicates we want to distribute all our different S3 files across all instances. Otherwise all data files will get loaded into each and every single instance leading to a much longer training time.
+
+---
+
+### XGBoost estimator
+- we specify our instance count to be 25
+- Once we specify a count greater than one, SageMaker infers Distributed Data Parallel for our model.
+```python
+
+    image_uri = sagemaker.image_uris.retrieve(
+        framework="xgboost",
+        region='us-east-1',
+        version="1.0-1",
+        py_version="py3",
+        instance_type='ml.m5.24xlarge',
+    )
+
+    xgb_train = Estimator(
+        image_uri=image_uri,
+        instance_type='ml.m5.24xlarge',
+        instance_count=25,
+        output_path=f's3://{default_bucket}/{s3_prefix}/xgb_model',
+        sagemaker_session=sagemaker_session,
+        role=role,
+    )
+
+    xgb_train.set_hyperparameters(
+        objective="reg:linear",
+        num_round=50,
+        max_depth=5,
+        eta=0.2,
+        gamma=4,
+        min_child_weight=6,
+        subsample=0.7,
+        silent=0,
+    )
+  ```
+  - We can then kick off a training job by fitting the algorithm on the training input.
+  ```python
+    xgb_train.fit({'train': train_input})
+  ```
+---
+
+#### Outside of tuning the hardware behind the training job we can revisit the data source format we were talking about. You can evaluate FsX Lustre which can scale to 100s of GB/s throughput. Another option is sharding the dataset in a different format like parquet to try various combinations of number of files and file size.
+
+---
+
 ### 🔹 1. Data Parallelism with tf.distribute.MirroredStrategy
 ```python
 import tensorflow as tf
@@ -109,95 +175,3 @@ if __name__ == "__main__":
 - Works best on multi-GPU instances (e.g., ml.p3.16xlarge, ml.p4d.24xlarge).
 - 👉 Here, the first layer lives on GPU:0/smp.partition(0) and the later layers on GPU:1/smp.partition(1). The data flows through them sequentially. This helps when the model is too large for one GPU.
 
----
-
-### 🔹 3. Sagemakers built in distributed training example
-ScriptProcessor —  won’t give you SageMaker’s built-in distributed training support. We will use an Estimator + TrainingStep, so you can use distribution configs and scale out training. Below are two helpers you can drop into your pipeline.py to create steps for data parallel and model parallel training. They assume you have ROLE, local_session, and your S3 bucket constants already defined (as in your current file).
-```python
-from sagemaker.workflow.steps import TrainingStep
-from sagemaker.tensorflow import TensorFlow
-
-# --- Data-parallel (single-node, multi-GPU via MirroredStrategy) ---
-def train_tf_data_parallel_step(output_s3_prefix: str):
-    estimator = TensorFlow(
-        entry_point="train_tf_dp.py",
-        source_dir="scripts",
-        role=ROLE,
-        instance_type="ml.p3.8xlarge",    # 4x V100 GPUs (example)
-        instance_count=1,                 # single node; MirroredStrategy uses all GPUs
-        framework_version="2.12",
-        py_version="py39",
-        hyperparameters={"epochs": 5, "batch-size": 256},
-        output_path=f"s3://{S3_BUCKET}/{output_s3_prefix}",
-        sagemaker_session=local_session,
-    )
-
-    return TrainingStep(
-        name="TrainTFDataParallel",
-        estimator=estimator,
-        inputs={}   # not using channels here; the script downloads MNIST
-    )
-
-# --- Data-parallel (multi-node with Horovod) ---
-def train_tf_data_parallel_hvd_step(output_s3_prefix: str):
-    estimator = TensorFlow(
-        entry_point="train_tf_dp_hvd.py",
-        source_dir="scripts",
-        role=ROLE,
-        instance_type="ml.p3.8xlarge",
-        instance_count=2,                 # multi-node
-        framework_version="2.12",
-        py_version="py39",
-        hyperparameters={"epochs": 5, "batch-size": 256, "lr": 0.001},
-        distribution={
-            "mpi": {
-                "enabled": True,
-                "processes_per_host": 4,   # GPUs per node
-                "custom_mpi_options": "-x NCCL_DEBUG=INFO"
-            }
-        },
-        output_path=f"s3://{S3_BUCKET}/{output_s3_prefix}",
-        sagemaker_session=local_session,
-    )
-
-    return TrainingStep(
-        name="TrainTFDataParallelHvd",
-        estimator=estimator,
-        inputs={}
-    )
-
-# --- Model-parallel (SMP) ---
-def train_tf_model_parallel_step(output_s3_prefix: str):
-    estimator = TensorFlow(
-        entry_point="train_tf_mp.py",
-        source_dir="scripts",
-        role=ROLE,
-        instance_type="ml.p3.16xlarge",   # multi-GPU required
-        instance_count=1,
-        framework_version="2.12",
-        py_version="py39",
-        distribution={
-            "smdistributed": {
-                "modelparallel": {
-                    "enabled": True,
-                    "parameters": {
-                        "partitions": 2,           # number of partitions (GPUs)
-                        "pipeline": "interleaved", # pipeline schedule
-                        "microbatches": 4,         # pipeline micro-batching
-                        "active_microbatches": 2,
-                        "ddp": False               # DDP+SMP = hybrid (set True if you want both)
-                    }
-                }
-            }
-        },
-        hyperparameters={"epochs": 3, "batch-size": 256},
-        output_path=f"s3://{S3_BUCKET}/{output_s3_prefix}",
-        sagemaker_session=local_session,
-    )
-
-    return TrainingStep(
-        name="TrainTFModelParallel",
-        estimator=estimator,
-        inputs={}
-    )
-```
