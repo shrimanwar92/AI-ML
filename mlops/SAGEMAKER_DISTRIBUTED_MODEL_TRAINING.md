@@ -7,8 +7,8 @@
 
 ### Why does data source matter with SageMaker?
 - Where and how our data is provided is essential to optimizing training time.
-- `File Mode:` Here SageMaker downloads your dataset into the instance memory before training kicks off. Downloads full data in memory.
-- `Fast File Mode: ` With Fast File Mode the dataset is streamed into the instance in real-time so we can avoid the overhead of downloading the entire dataset.
+- `File Mode:` SageMaker copies a dataset from Amazon S3 to the ML instance storage, which is an attached Amazon Elastic Block Store (Amazon EBS) volume or NVMe SSD volume, before your training script starts.
+- `Fast File Mode: ` SageMaker exposes a dataset residing in Amazon S3 as a POSIX file system on the training instance. Dataset files are streamed from Amazon S3 on demand as your training script reads them.
 - `Fsx Lustre: ` Outside of S3 there’s also options to work with Elastic File System (EFS) and FsX Lustre on SageMaker. FsX Lustre you can scale at a greater rate compared to other options, but there is operational overhead of setting up the VPC for this option.
 
 ---
