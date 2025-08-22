@@ -1,2 +1,6 @@
 tensorflow-data-validation
 tensorflow-transform
+tensorflow_hub
+tensorflow_model_optimization
+tensorflow-neuronx
+neuronx-cc

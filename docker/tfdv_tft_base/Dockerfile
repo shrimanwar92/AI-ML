@@ -18,6 +18,9 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir --prefer-binary --timeout=120 -r requirements.txt
 
+RUN pip install --no-cache-dir git+https://github.com/onnx/tensorflow-onnx
+RUN pip install --no-cache-dir onnxruntime
+
 # Optional: Remove build tools to reduce final image size
 RUN apt-get remove -y build-essential && apt-get autoremove -y && apt-get clean
 

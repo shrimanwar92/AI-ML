@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  pandas:
+    image: pytorch:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+      - PIP_NO_CACHE_DIR=0  # allow pip to use cache
+      - PIP_DISABLE_PIP_VERSION_CHECK=1
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+      - pip_cache:/root/.cache/pip  # cache pip downloads
+    command: python3
+    stdin_open: true
+    tty: true
+
+volumes:
+  pip_cache:
