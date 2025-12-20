@@ -1,0 +1,85 @@
+baseline {
+  feature {
+    name: "product_id"
+    type: INT
+    presence {
+      min_fraction: 1.0
+      min_count: 1
+    }
+    shape {
+      dim {
+        size: 1
+      }
+    }
+  }
+  feature {
+    name: "category"
+    type: BYTES
+    domain: "category"
+    presence {
+      min_fraction: 1.0
+      min_count: 1
+    }
+    drift_comparator {
+      infinity_norm {
+        threshold: 0.05
+      }
+    }
+    shape {
+      dim {
+        size: 1
+      }
+    }
+  }
+  feature {
+    name: "price"
+    type: FLOAT
+    presence {
+      min_fraction: 1.0
+      min_count: 1
+    }
+    shape {
+      dim {
+        size: 1
+      }
+    }
+  }
+  string_domain {
+    name: "category"
+    value: "Books"
+    value: "Clothing"
+    value: "Electronics"
+  }
+}
+anomaly_info {
+  key: "category"
+  value {
+    description: "Examples contain values missing from the schema: Home Goods (~60%).  The Linfty distance between current and previous is 0.6 (up to six significant digits), above the threshold 0.05. The feature value with maximum difference is: Home Goods"
+    severity: ERROR
+    short_description: "Multiple errors"
+    reason {
+      type: ENUM_TYPE_UNEXPECTED_STRING_VALUES
+      short_description: "Unexpected string values"
+      description: "Examples contain values missing from the schema: Home Goods (~60%). "
+    }
+    reason {
+      type: COMPARATOR_L_INFTY_HIGH
+      short_description: "High Linfty distance between current and previous"
+      description: "The Linfty distance between current and previous is 0.6 (up to six significant digits), above the threshold 0.05. The feature value with maximum difference is: Home Goods"
+    }
+    path {
+      step: "category"
+    }
+  }
+}
+anomaly_name_format: SERIALIZED_PATH
+drift_skew_info {
+  path {
+    step: "category"
+  }
+  drift_measurements {
+    type: L_INFTY
+    value: 0.6
+    threshold: 0.05
+  }
+}

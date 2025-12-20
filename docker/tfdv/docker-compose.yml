@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  tfdv-drift:
+    # Use the image name you built previously
+    image: tfdv-drift-detector
+    build: .
+    volumes:
+      - ${PWD}:/app
+    
+    # Ensure the container is removed after the script finishes
+    restart: 'no'
+    
+    # Optional: If you want to run a specific command instead of the default CMD in the Dockerfile, 
+    # uncomment and modify the line below.
+    # command: ["python", "drift_detector.py"]
